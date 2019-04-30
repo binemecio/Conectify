@@ -75,7 +75,7 @@ public class SSIDConnectionActivity extends AppCompatActivity implements View.On
     {
         ConnectionSSID connection = new ConnectionSSID(this,"test12345","abcd1234");
 
-        boolean isConnected = connection.tryConnection();
+        boolean isConnected = connection.tryHiddenConnection();
         System.out.println("isconnected to test12345: "+isConnected);
 
         if(isConnected)

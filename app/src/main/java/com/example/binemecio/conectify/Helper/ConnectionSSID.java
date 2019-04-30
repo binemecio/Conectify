@@ -1,6 +1,7 @@
 package com.example.binemecio.conectify.Helper;
 
 import android.app.Activity;
+import android.content.Context;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
@@ -16,8 +17,8 @@ import static android.content.Context.WIFI_SERVICE;
  */
 
 public class ConnectionSSID {
-    private String networkSSID = "REDWIFI";
-    private String networkPass = "password";
+    private String networkSSID = "";
+    private String networkPass = "";
     private WifiConfiguration conf = new WifiConfiguration();
     private Activity context;
     public ConnectionSSID(Activity context)
@@ -32,6 +33,47 @@ public class ConnectionSSID {
         this.networkPass = networkPass;
     }
 
+    public boolean tryHiddenConnection()
+    {
+        WifiConfiguration conf = new WifiConfiguration();
+        conf.SSID = "\"" + networkSSID + "\"";   // Please note the quotes. String should contain ssid in quotes
+
+        conf.preSharedKey = "\"" + networkPass + "\"";
+
+        conf.hiddenSSID = true;
+        conf.status = WifiConfiguration.Status.ENABLED;
+        conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.TKIP);
+        conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.CCMP);
+        conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK);
+        conf.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.TKIP);
+        conf.allowedPairwiseCiphers.set(WifiConfiguration.PairwiseCipher.CCMP);
+        conf.allowedProtocols.set(WifiConfiguration.Protocol.RSN);
+        conf.allowedProtocols.set(WifiConfiguration.Protocol.WPA);
+
+        WifiManager wifiManager = (WifiManager)context.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
+        wifiManager.addNetwork(conf);
+
+        boolean isConected = false;
+
+        List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
+        for (WifiConfiguration i : list) {
+            if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+
+                wifiManager.disconnect();
+
+                wifiManager.enableNetwork(i.networkId, true);
+
+                wifiManager.reconnect();
+
+                wifiManager.saveConfiguration();
+                isConected = true;
+                break;
+            }
+        }
+
+        return isConected;
+    }
 
     // try connection with the parameter (ssid, password) before sent
     public boolean tryConnection()
