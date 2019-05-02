@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_above="@+id/comment_separator"
+    android:background="@color/white"
+    >
+
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:defaultFocusHighlightEnabled="true"
+            android:focusableInTouchMode="true"
+            android:focusable="true"
+            android:focusedByDefault="true"
+            >
+
+
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/New_vacancy_padding_left"
+                android:layout_marginRight="@dimen/New_vacancy_padding_left"
+                android:layout_marginTop="@dimen/New_vacancy_marginTop"
+                >
+
+                <EditText android:id="@+id/New_vacancy_publish_title_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="textPersonName"
+                    android:paddingBottom="@dimen/New_vacancy_paddigTop"
+                    android:paddingTop="@dimen/New_vacancy_paddigTop"
+                    android:textSize="@dimen/New_vacancy_text_size"
+                    android:singleLine="true"
+                    android:hint="Nombres"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/New_vacancy_padding_left"
+                android:layout_marginRight="@dimen/New_vacancy_padding_left"
+                android:layout_marginTop="@dimen/New_vacancy_marginTop"
+                >
+
+                <EditText
+                    android:id="@+id/New_vacancy_position_name_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:hint="Apellidos"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/New_vacancy_paddigTop"
+                    android:paddingTop="@dimen/New_vacancy_paddigTop"
+                    android:textSize="@dimen/New_vacancy_text_size" />
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/New_vacancy_padding_left"
+                android:layout_marginRight="@dimen/New_vacancy_padding_left"
+                android:layout_marginTop="@dimen/New_vacancy_marginTop"
+                >
+
+                <EditText
+                    android:id="@+id/New_vacancy_email_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:hint="Telefono"
+                    android:inputType="phone"
+                    android:maxLines="1"
+                    android:imeOptions="actionNext"
+                    android:paddingBottom="@dimen/New_vacancy_paddigTop"
+                    android:paddingTop="@dimen/New_vacancy_paddigTop"
+                    android:textSize="@dimen/New_vacancy_text_size" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/New_vacancy_padding_left"
+                android:layout_marginRight="@dimen/New_vacancy_padding_left"
+                android:layout_marginTop="@dimen/New_vacancy_marginTop"
+                >
+                <EditText
+                    android:id="@+id/New_vacancy_description_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/New_vacancy_paddigTop"
+                    android:paddingTop="@dimen/New_vacancy_paddigTop"
+                    android:textSize="@dimen/New_vacancy_text_size" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+
+            <TextView
+                android:id="@+id/btn_send_record"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="@dimen/New_vacancy_padding_left"
+                android:layout_marginLeft="@dimen/New_vacancy_padding_left"
+                android:paddingBottom="@dimen/New_vacancy_paddigTop"
+                android:paddingTop="@dimen/New_vacancy_paddigTop"
+                android:text="Registrarse"
+                android:background="@drawable/avance_search_radio_button"
+                android:textAlignment="center"
+                android:textColor="#FFF"
+                android:textSize="14dp"
+                android:textStyle="bold"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+</android.support.design.widget.CoordinatorLayout>
