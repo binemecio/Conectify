@@ -35,6 +35,14 @@ public class DesignHelper {
         dialog.show();
     }
 
+    public static void showSimpleDialog(Activity activity, String title, String message, callbackSimple result)
+    {
+        Dialog dialog;
+        AlertDialog.Builder builder = getSimpleBuilder(activity,title,message,result);
+        dialog = builder.create();
+        dialog.show();
+    }
+
     public static void showSimpleDialogWithImage(Activity activity,int resource, String title,String message,String positiveButton, callbackSimple result)
     {
         Dialog dialog;
@@ -52,6 +60,17 @@ public class DesignHelper {
         if(!helper.isNullOrWhiteSpace(message)) builder.setMessage(message);
         builder.setPositiveButton(positiveButton,(dialog1, which) -> { result.notificate(); });
         builder.setNegativeButton("Cancelar",null);
+        return builder;
+    }
+
+    private static AlertDialog.Builder getSimpleBuilder(Activity activity, String title,String message, callbackSimple result)
+    {
+        Helpers helper = new Helpers();
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+        if(!helper.isNullOrWhiteSpace(title)) builder.setTitle(title);
+        if(!helper.isNullOrWhiteSpace(message)) builder.setMessage(message);
+        builder.setPositiveButton("OK",(dialog1, which) -> { result.notificate(); });
+
         return builder;
     }
 }

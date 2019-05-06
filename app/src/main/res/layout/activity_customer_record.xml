@@ -12,9 +12,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/white"
         >
 
         <LinearLayout
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -31,12 +33,13 @@
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+
                 android:layout_marginLeft="@dimen/New_vacancy_padding_left"
                 android:layout_marginRight="@dimen/New_vacancy_padding_left"
                 android:layout_marginTop="@dimen/New_vacancy_marginTop"
                 >
 
-                <EditText android:id="@+id/New_vacancy_publish_title_txt"
+                <EditText android:id="@+id/name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="textPersonName"
@@ -58,7 +61,7 @@
                 >
 
                 <EditText
-                    android:id="@+id/New_vacancy_position_name_txt"
+                    android:id="@+id/lastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -84,7 +87,7 @@
                 >
 
                 <EditText
-                    android:id="@+id/New_vacancy_email_txt"
+                    android:id="@+id/phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -109,7 +112,7 @@
                 android:layout_marginTop="@dimen/New_vacancy_marginTop"
                 >
                 <EditText
-                    android:id="@+id/New_vacancy_description_txt"
+                    android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
@@ -125,14 +128,14 @@
 
 
             <TextView
-                android:id="@+id/btn_send_record"
-                android:layout_width="match_parent"
+                android:id="@+id/btnSend"
+                android:layout_width="200dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:layout_marginTop="30dp"
-                android:layout_marginRight="@dimen/New_vacancy_padding_left"
-                android:layout_marginLeft="@dimen/New_vacancy_padding_left"
+
                 android:paddingBottom="@dimen/New_vacancy_paddigTop"
                 android:paddingTop="@dimen/New_vacancy_paddigTop"
                 android:text="Registrarse"

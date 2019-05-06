@@ -15,6 +15,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.binemecio.conectify.Interface.PassDataEnterprise;
 import com.example.binemecio.conectify.Interface.PassDataListEnterprise;
+import com.example.binemecio.conectify.Interface.PassDataResult;
+import com.example.binemecio.conectify.Pojo.ClientRecord;
 import com.example.binemecio.conectify.Pojo.EnterPrise;
 
 import org.json.JSONArray;
@@ -52,37 +54,16 @@ public class ConnectionServer {
         this.activity = activity;
         this.url = url;
     }
-    public void getEnterpriseDataFromServer(PassDataListEnterprise callback)
+    public void getEnterpriseDataFromServer(String ssid1, PassDataListEnterprise callback)
     {
         JSONObject jsonParam = new JSONObject();
         try
         {
-            jsonParam.put("consulta", "SELECT * FROM tbl_configuracion_empresas");
-        }catch (JSONException e)
-        {
+            jsonParam.put("first_ssid", ssid1);
+        }catch (JSONException e) {}
 
-        }
-
-        // Creating the JsonObjectRequest class called obreq, passing required parameters:
-        //GET is used to fetch data from the server, JsonURL is the URL to be fetched from
-
-//        StringRequest request = new StringRequest(Request.Method.POST,url, response -> {
-//            System.out.println(response);
-//        } , error -> {
-//            System.out.println(error.getMessage());
-//        }
-//        );
-//
 
         JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, url, null, response -> {
-//            JSONArray jsonArray = null;
-//            try
-//            {
-//                jsonArray = new JSONArray(response.toString());
-//            }
-//            catch (Exception e){ }
-//            List<EnterPrise> enterPriseList = jsonArray == null ? new ArrayList<>() : EnterPrise.getEnterPriseList(jsonArray);
-//            callback.setDataListEnterprise(enterPriseList);
 
             List<EnterPrise> list = new ArrayList<>();
             list.add(new EnterPrise(response));
@@ -98,44 +79,41 @@ public class ConnectionServer {
         queue.add(obreq);
     }
 
-    public String getSSIDFromServer()
+
+    public void sendRecordDataToServer(ClientRecord record, PassDataResult result)
     {
-        class DownloadJSON extends AsyncTask<Void, Void, String> {
+        JSONObject jsonParam = new JSONObject();
+        try
+        {
+            jsonParam.put("id_configuracion_empresa", record.getId_configuracion_empresa());
+            jsonParam.put("nombres_cliente", record.getNombres_cliente());
+            jsonParam.put("apellidos_cliente", record.getApellidos_cliente());
+            jsonParam.put("numero_celular", record.getNumero_celular());
+            jsonParam.put("correo_electronico", record.getCorreo_electronico());
+            jsonParam.put("dispositivo_cliente", record.getDispositivo_cliente());
+            jsonParam.put("sistema_operativo_cliente", record.getSistema_operativo_cliente());
 
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-            }
+
+        }catch (JSONException e) {}
 
 
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                Toast.makeText(activity, s, Toast.LENGTH_SHORT).show();
-                //loadIntoListView(s);
-                System.out.print("");
-            }
+        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, url, null, response -> {
 
-            @Override
-            protected String doInBackground(Void... voids) {
-                try {
-                    URL url = new URL(ConnectionServer.this.url);
-                    HttpURLConnection con = (HttpURLConnection) url.openConnection();
-                    StringBuilder sb = new StringBuilder();
-                    BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(con.getInputStream()));
-                    String json;
-                    while ((json = bufferedReader.readLine()) != null) {
-                        sb.append(json + "\n");
-                    }
-                    return sb.toString().trim();
-                } catch (Exception e) {
-                    return null;
-                }
-            }
+//            List<EnterPrise> list = new ArrayList<>();
+//            list.add(new EnterPrise(response));
+            result.setData(true, response.toString());
+
+        }, error -> {
+            //System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage());
+            result.setData(false, error.getMessage());
         }
-        DownloadJSON getJSON = new DownloadJSON();
-        getJSON.execute();
-        return getJSON.toString();
+        ){
+
+        };
+        // Adds the JSON object request "obreq" to the request queue
+        queue.add(obreq);
     }
+
+
 
 }

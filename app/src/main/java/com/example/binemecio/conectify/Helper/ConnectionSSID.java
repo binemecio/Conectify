@@ -75,6 +75,8 @@ public class ConnectionSSID {
         return isConected;
     }
 
+
+
     // try connection with the parameter (ssid, password) before sent
     public boolean tryConnection()
     {
@@ -105,13 +107,26 @@ public class ConnectionSSID {
         return this.isConnected();
     }
 
+    public boolean setEnabledWifi()
+    {
+        WifiManager wifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
+        return wifiManager.setWifiEnabled(true);
+    }
+
+
+    public static boolean setEnabledWifi(Activity activity)
+    {
+        WifiManager wifiManager = (WifiManager)activity.getApplicationContext().getSystemService(WIFI_SERVICE);
+        return wifiManager.setWifiEnabled(true);
+    }
+
     // try reconnect in case that this network has been saved
-    public boolean tryReconnect()
+    public boolean tryReconnect(String ssid)
     {
         WifiManager wifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
         int netId = -1;
         for (WifiConfiguration tmp : wifiManager.getConfiguredNetworks())// // permission ACCESS_WIFI_STATE
-            if (tmp.SSID.equals( "\""+this.networkSSID+"\""))
+            if (tmp.SSID.equals( "\""+ssid+"\""))
             {
                 netId = tmp.networkId;
                 wifiManager.enableNetwork(netId, true);

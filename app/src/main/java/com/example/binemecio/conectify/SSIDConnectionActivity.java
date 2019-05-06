@@ -2,6 +2,7 @@ package com.example.binemecio.conectify;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.provider.Settings;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.example.binemecio.conectify.Helper.ConnectionSSID;
 import com.example.binemecio.conectify.Helper.ConnectionServer;
 import com.example.binemecio.conectify.Helper.DesignHelper;
+import com.example.binemecio.conectify.Helper.Helpers;
 import com.example.binemecio.conectify.Pojo.EnterPrise;
 import com.github.ybq.android.spinkit.SpinKitView;
 
@@ -19,12 +21,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SSIDConnectionActivity extends AppCompatActivity implements View.OnClickListener {
+public class SSIDConnectionActivity extends AppCompatActivity {
 
     private TextView textLoading;
     private SpinKitView spinKitView;
     private List<ConnectionSSID> connectionList = new ArrayList<>();
-    ConnectionServer connectionServer;
+    private ConnectionServer connectionServer;
+    private String ssid = "";
+    private Helpers helper = new Helpers();
+    private Boolean isConnected = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,13 +50,46 @@ public class SSIDConnectionActivity extends AppCompatActivity implements View.On
     {
         textLoading = findViewById(R.id.textLoading);
         spinKitView = findViewById(R.id.spin_kit);
+        this.ssid = ConnectionSSID.getConnectedSSID(this);
+        this.validateServices();
     }
 
+    private void validateServices()
+    {
+        if(!ConnectionSSID.isWifiOpen(this))
+        {
+            DesignHelper.showSimpleDialog(this,"Error", "Por favor habilite la red WIFI", "Habilitar red WIFI", () -> {
+                ConnectionSSID.setEnabledWifi(this);
+            } );
+            return;
+        }
+
+
+
+        if (helper.isNullOrWhiteSpace(ssid))
+        {
+            DesignHelper.showSimpleDialog(this,"Error", "Es necesario que se conecte a una red WIFI para usar esta aplicación", "Abrir configuración", () -> {
+                SSIDConnectionActivity.this.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+            } );
+        }
+
+        this.startConnectionServer();
+    }
+
+    @Override
+    protected void onResume() {
+
+        super.onResume();
+        if (!this.isConnected) {
+            this.validateServices();
+        }
+
+    }
 
     private void startConnectionServer()
     {
         textLoading.setText("Recupenrando Información");
-        connectionServer.getEnterpriseDataFromServer(data -> {
+        connectionServer.getEnterpriseDataFromServer(this.ssid ,data -> {
             if (data.isEmpty()){
                 Toast.makeText(this,"Failed retrieve data from server", Toast.LENGTH_LONG).show();
                 DesignHelper.showSimpleDialog(this,"Error", "Tenemos problemas al conectarnos a la red WIFI por favor intente nuevamente", "Intentar de nuevo", () -> {
@@ -59,7 +97,6 @@ public class SSIDConnectionActivity extends AppCompatActivity implements View.On
                 } );
                 return;
             }
-
 
             for (EnterPrise item : data)
             {
@@ -77,8 +114,6 @@ public class SSIDConnectionActivity extends AppCompatActivity implements View.On
         });
     }
 
-
-
     private void registerTheCurrentNetwork(String ssid, String password)
     {
         ConnectionSSID connection = new ConnectionSSID(this,ssid, password);
@@ -88,7 +123,6 @@ public class SSIDConnectionActivity extends AppCompatActivity implements View.On
         {
             connection.setNetworkSSID(currentSSID);
             // print current network
-
             this.connectionList.add(connection);
         }
         else
@@ -123,7 +157,7 @@ public class SSIDConnectionActivity extends AppCompatActivity implements View.On
         }
         else
         {
-            isConnected = connection.tryReconnect();
+            isConnected = connection.tryReconnect(this.ssid);
 
             if (isConnected)
             {
@@ -144,12 +178,4 @@ public class SSIDConnectionActivity extends AppCompatActivity implements View.On
 
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId())
-        {
-            case R.id.btnConnect:
-                break;
-        }
-    }
 }

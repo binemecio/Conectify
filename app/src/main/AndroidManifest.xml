@@ -14,14 +14,22 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SSIDConnectionActivity">
+        <activity android:name=".SSIDConnectionActivity"></activity>
+        <activity android:name=".CustomerRecord">
+
+        </activity>
+        <activity
+            android:name=".AdActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity android:name=".SplashScreenActivity"
+            android:theme="@style/SplashTheme"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CustomerRecord"></activity>
     </application>
 
 </manifest>
