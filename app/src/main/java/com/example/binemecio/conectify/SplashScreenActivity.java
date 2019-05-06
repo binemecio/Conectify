@@ -5,6 +5,9 @@ import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.binemecio.conectify.Helper.ConnectionSSID;
+import com.example.binemecio.conectify.Singletoon.StorageSingleton;
+
 public class SplashScreenActivity extends AppCompatActivity {
 
     @Override
@@ -16,5 +19,13 @@ public class SplashScreenActivity extends AppCompatActivity {
             SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, CustomerRecord.class));
         }, 3000);
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        String ssid = StorageSingleton.getInstance().getSsid();
+        ConnectionSSID connectionSSID = new ConnectionSSID(this, ssid, "");
+        connectionSSID.tryReconnect();
+        super.onDestroy();
     }
 }

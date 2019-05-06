@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Conectify.iml" filepath="$PROJECT_DIR$/Conectify.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/conectify.iml" filepath="$PROJECT_DIR$/conectify.iml" />
     </modules>
   </component>
 </project>

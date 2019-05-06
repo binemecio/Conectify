@@ -86,7 +86,7 @@ public class ConnectionSSID {
         WifiManager wifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
 
         if ((wifiManager.isWifiEnabled() == false)) {
-            Toast.makeText(this.context, "Conectando a WIFI...", Toast.LENGTH_LONG).show();
+            Toast.makeText(this.context, "Encendiendo WIFI...", Toast.LENGTH_LONG).show();
 
             // is necesary manage the permission for api > 21
             wifiManager.setWifiEnabled(true);
@@ -134,6 +134,29 @@ public class ConnectionSSID {
 
         return this.isConnected();
     }
+
+    public boolean tryReconnect()
+    {
+        WifiManager wifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
+
+        if ((wifiManager.isWifiEnabled() == false)) {
+            Toast.makeText(this.context, "Encendiendo WIFI...", Toast.LENGTH_LONG).show();
+
+            // is necesary manage the permission for api > 21
+            wifiManager.setWifiEnabled(true);
+        }
+
+        int netId = -1;
+        for (WifiConfiguration tmp : wifiManager.getConfiguredNetworks())// // permission ACCESS_WIFI_STATE
+            if (tmp.SSID.equals( "\""+this.networkSSID+"\""))
+            {
+                netId = tmp.networkId;
+                wifiManager.enableNetwork(netId, true);
+            }
+
+        return this.isConnected();
+    }
+
 
     // verify if the network configured is connected
     public boolean isConnected()

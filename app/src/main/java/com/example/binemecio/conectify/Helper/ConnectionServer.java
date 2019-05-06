@@ -13,8 +13,10 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.binemecio.conectify.GlobalVar.GlobalVar;
 import com.example.binemecio.conectify.Interface.PassDataEnterprise;
 import com.example.binemecio.conectify.Interface.PassDataListEnterprise;
+import com.example.binemecio.conectify.Interface.PassDataLong;
 import com.example.binemecio.conectify.Interface.PassDataResult;
 import com.example.binemecio.conectify.Pojo.ClientRecord;
 import com.example.binemecio.conectify.Pojo.EnterPrise;
@@ -54,7 +56,7 @@ public class ConnectionServer {
         this.activity = activity;
         this.url = url;
     }
-    public void getEnterpriseDataFromServer(String ssid1, PassDataListEnterprise callback)
+    public void getEnterpriseDataFromServer(String ssid1, PassDataEnterprise callback)
     {
         JSONObject jsonParam = new JSONObject();
         try
@@ -65,12 +67,18 @@ public class ConnectionServer {
 
         JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, url, null, response -> {
 
-            List<EnterPrise> list = new ArrayList<>();
-            list.add(new EnterPrise(response));
-            callback.setDataListEnterprise(list);
+            try {
+                JSONArray jsonArray = new JSONArray(response.toString());
+                callback.setDataEnterprise(EnterPrise.getEnterPriseList(jsonArray));
+            } catch (JSONException e) {
+                callback.setDataEnterprise(null);
+            }
+
 
         }, error -> {
             System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage());
+
+            callback.setDataEnterprise(null);
         }
         ){
 
@@ -97,7 +105,7 @@ public class ConnectionServer {
         }catch (JSONException e) {}
 
 
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, url, null, response -> {
+        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, url, jsonParam, response -> {
 
 //            List<EnterPrise> list = new ArrayList<>();
 //            list.add(new EnterPrise(response));
@@ -106,6 +114,49 @@ public class ConnectionServer {
         }, error -> {
             //System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage());
             result.setData(false, error.getMessage());
+        }
+        ){
+
+        };
+        // Adds the JSON object request "obreq" to the request queue
+        queue.add(obreq);
+    }
+
+    public void getLoopTime(String id_ciclo, PassDataLong result)
+    {
+//        tiempo_ciclo
+//        id_ciclo_lanzamiento_app
+        JSONObject jsonParam = new JSONObject();
+        try
+        {
+            jsonParam.put("id_ciclo_lanzamiento_app", id_ciclo);
+
+
+        }catch (JSONException e) {}
+
+
+        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, GlobalVar.adLoopUrl, jsonParam, response -> {
+
+//            List<EnterPrise> list = new ArrayList<>();
+//            list.add(new EnterPrise(response));
+
+
+            try {
+                JSONArray jsonArray = new JSONArray(response.toString());
+                JSONObject object = jsonArray.getJSONObject(0);
+                Long value = object.getLong("tiempo_ciclo");
+                result.setData(true, value);
+            } catch (JSONException e) {
+                result.setData(false, Long.valueOf(0));
+            }
+
+
+
+        }, error -> {
+            //System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage());
+
+            result.setData(false, Long.valueOf(0));
+
         }
         ){
 

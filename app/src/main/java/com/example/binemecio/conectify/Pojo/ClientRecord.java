@@ -13,6 +13,8 @@ public class ClientRecord {
 
     public ClientRecord(){}
 
+
+
     public ClientRecord(String id_configuracion_empresa, String nombres_cliente, String apellidos_cliente, String numero_celular, String correo_electronico, String dispositivo_cliente, String sistema_operativo_cliente, String fecha_hora_acceso_cliente) {
         this.id_configuracion_empresa = id_configuracion_empresa;
         this.nombres_cliente = nombres_cliente;

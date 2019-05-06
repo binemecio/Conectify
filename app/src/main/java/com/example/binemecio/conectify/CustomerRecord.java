@@ -16,6 +16,8 @@ import com.example.binemecio.conectify.Helper.DesignHelper;
 import com.example.binemecio.conectify.Helper.HelperAd;
 import com.example.binemecio.conectify.Helper.Helpers;
 import com.example.binemecio.conectify.Pojo.ClientRecord;
+import com.example.binemecio.conectify.Pojo.EnterPrise;
+import com.example.binemecio.conectify.Singletoon.StorageSingleton;
 
 public class CustomerRecord extends AppCompatActivity implements View.OnClickListener, EditText.OnFocusChangeListener {
 
@@ -26,6 +28,7 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
     private ConnectionServer connection;
     private boolean isStarted = false, isValidName, isValidLastName, isValidPhone, isValidEmail;
     private Helpers helper = new Helpers();
+    private EnterPrise enterPrise;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,7 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_customer_record);
         this.setTitle("Registro");
         this.initialize();
+        this.getLoopTime();
         this.assigneEventClick();
         this.loadData();
     }
@@ -49,6 +53,20 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         editTextPhone = findViewById(R.id.phone);
         editTextEmail = findViewById(R.id.email);
         btnSendRecord = findViewById(R.id.btnSend);
+        this.enterPrise = StorageSingleton.getInstance().getEnterPrise();
+    }
+
+
+    private void getLoopTime(){
+
+        new Thread(() -> {
+            this.connection.getLoopTime(this.enterPrise.getId_ciclo_display_anuncios(),(result, value) -> {
+
+                CustomerRecord.this.runOnUiThread(() -> {
+                    StorageSingleton.getInstance().setLoopTime(value == Long.valueOf(0) ? Long.valueOf(10000) : value);
+                });
+            });
+        }).start();
     }
 
     private void assigneEventClick()
@@ -80,6 +98,7 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         {
             new Thread(() -> {
                 this.connection.sendRecordDataToServer(this.record,(result, message) -> {
+
                     CustomerRecord.this.runOnUiThread(() -> {
                         this.minimize();
                         this.isStarted = true;

@@ -11,8 +11,11 @@ import java.util.List;
  */
 
 public class EnterPrise {
-    private String id_empresa, acronimo_empresa, nombre_empresa = "";
-    private String id_configuracion_empresa, ip_empresa, ssid1_empresa, ssid2_empresa, password, tiempo_ciclo = "";
+
+    private String id_configuracion_empresa, ssid1_empresa, ssid2_empresa, password, direccion_url, id_ciclo_display_anuncios  = "";
+    private Long anuncio_lapso, tiempo_ciclo = Long.valueOf(0);
+    private List<Ad> adList = new ArrayList<>();
+
 
     public EnterPrise() {
 
@@ -26,6 +29,11 @@ public class EnterPrise {
             this.ssid1_empresa = json.getString("ssid1_empresa") + "";
             this.ssid2_empresa = json.getString("ssid2_empresa") + "";
             this.password = json.getString("password") + "";
+            this.direccion_url = json.getString("direccion_url");
+            this.anuncio_lapso = json.getLong("anuncio_lapso");
+            this.tiempo_ciclo = json.getLong("tiempo_ciclo");
+            this.id_ciclo_display_anuncios = json.getString("id_ciclo_display_anuncios");
+
             //this.tiempo_ciclo = json.getString("tiempo_ciclo") + "";
         }
         catch (Exception e){
@@ -35,7 +43,7 @@ public class EnterPrise {
 
 
 
-    public static List<EnterPrise> getEnterPriseList(JSONArray jsonArray)
+    public static EnterPrise getEnterPriseList(JSONArray jsonArray)
     {
         List<EnterPrise> enterPrises = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++ )
@@ -46,31 +54,32 @@ public class EnterPrise {
             }catch (Exception e) { System.out.print("Error to parse json array list to json object "+ e.getMessage()); }
         }
 
-        return enterPrises;
+
+
+        return parseArrayListToObjet(enterPrises);
     }
 
-    public String getId_empresa() {
-        return id_empresa;
+    private static EnterPrise parseArrayListToObjet(List<EnterPrise> list)
+    {
+        if (list.isEmpty())
+            return new EnterPrise();
+
+        EnterPrise value = list.get(0);
+
+        for (EnterPrise item : list)
+        {
+            value.adList.add(new Ad(item));
+        }
+
+        return value;
     }
 
-    public void setId_empresa(String id_empresa) {
-        this.id_empresa = id_empresa;
+    public List<Ad> getAdList() {
+        return adList;
     }
 
-    public String getAcronimo_empresa() {
-        return acronimo_empresa;
-    }
-
-    public void setAcronimo_empresa(String acronimo_empresa) {
-        this.acronimo_empresa = acronimo_empresa;
-    }
-
-    public String getNombre_empresa() {
-        return nombre_empresa;
-    }
-
-    public void setNombre_empresa(String nombre_empresa) {
-        this.nombre_empresa = nombre_empresa;
+    public void setAdList(List<Ad> adList) {
+        this.adList = adList;
     }
 
     public String getId_configuracion_empresa() {
@@ -79,14 +88,6 @@ public class EnterPrise {
 
     public void setId_configuracion_empresa(String id_configuracion_empresa) {
         this.id_configuracion_empresa = id_configuracion_empresa;
-    }
-
-    public String getIp_empresa() {
-        return ip_empresa;
-    }
-
-    public void setIp_empresa(String ip_empresa) {
-        this.ip_empresa = ip_empresa;
     }
 
     public String getSsid1_empresa() {
@@ -113,11 +114,35 @@ public class EnterPrise {
         this.password = password;
     }
 
-    public String getTiempo_ciclo() {
+    public String getDireccion_url() {
+        return direccion_url;
+    }
+
+    public void setDireccion_url(String direccion_url) {
+        this.direccion_url = direccion_url;
+    }
+
+    public String getId_ciclo_display_anuncios() {
+        return id_ciclo_display_anuncios;
+    }
+
+    public void setId_ciclo_display_anuncios(String id_ciclo_display_anuncios) {
+        this.id_ciclo_display_anuncios = id_ciclo_display_anuncios;
+    }
+
+    public Long getAnuncio_lapso() {
+        return anuncio_lapso;
+    }
+
+    public void setAnuncio_lapso(Long anuncio_lapso) {
+        this.anuncio_lapso = anuncio_lapso;
+    }
+
+    public Long getTiempo_ciclo() {
         return tiempo_ciclo;
     }
 
-    public void setTiempo_ciclo(String tiempo_ciclo) {
+    public void setTiempo_ciclo(Long tiempo_ciclo) {
         this.tiempo_ciclo = tiempo_ciclo;
     }
 }

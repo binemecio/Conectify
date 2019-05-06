@@ -22,7 +22,24 @@ public class StorageSingleton {
     private String ssid = "";
     private ClientRecord clientRecord;
     private EnterPrise enterPrise;
+    public Long loopTime = Long.valueOf(10000);
+    public int indexAd = 0;
 
+    public int getIndexAd() {
+        return indexAd;
+    }
+
+    public void setIndexAd(int indexAd) {
+        this.indexAd = indexAd;
+    }
+
+    public Long getLoopTime() {
+        return loopTime;
+    }
+
+    public void setLoopTime(Long loopTime) {
+        this.loopTime = loopTime;
+    }
 
     public String getSsid() {
         return ssid;

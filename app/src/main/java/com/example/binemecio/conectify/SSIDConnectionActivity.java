@@ -15,6 +15,7 @@ import com.example.binemecio.conectify.Helper.ConnectionServer;
 import com.example.binemecio.conectify.Helper.DesignHelper;
 import com.example.binemecio.conectify.Helper.Helpers;
 import com.example.binemecio.conectify.Pojo.EnterPrise;
+import com.example.binemecio.conectify.Singletoon.StorageSingleton;
 import com.github.ybq.android.spinkit.SpinKitView;
 
 import java.util.ArrayList;
@@ -30,6 +31,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
     private String ssid = "";
     private Helpers helper = new Helpers();
     private Boolean isConnected = false;
+    private ConnectionSSID actualSSID, hiddeSSID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,11 +53,14 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         textLoading = findViewById(R.id.textLoading);
         spinKitView = findViewById(R.id.spin_kit);
         this.ssid = ConnectionSSID.getConnectedSSID(this);
+        this.actualSSID = new ConnectionSSID(this);
+        StorageSingleton.getInstance().setSsid(this.actualSSID.getNetworkSSID());
         this.validateServices();
     }
 
     private void validateServices()
     {
+//        boolean canStartConnection = false;
         if(!ConnectionSSID.isWifiOpen(this))
         {
             DesignHelper.showSimpleDialog(this,"Error", "Por favor habilite la red WIFI", "Habilitar red WIFI", () -> {
@@ -64,14 +69,16 @@ public class SSIDConnectionActivity extends AppCompatActivity {
             return;
         }
 
-
-
         if (helper.isNullOrWhiteSpace(ssid))
         {
             DesignHelper.showSimpleDialog(this,"Error", "Es necesario que se conecte a una red WIFI para usar esta aplicación", "Abrir configuración", () -> {
                 SSIDConnectionActivity.this.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
             } );
+            return;
         }
+
+        this.actualSSID.setNetworkSSID(this.ssid);
+        this.actualSSID.setNetworkPass("");
 
         this.startConnectionServer();
     }
@@ -90,25 +97,27 @@ public class SSIDConnectionActivity extends AppCompatActivity {
     {
         textLoading.setText("Recupenrando Información");
         connectionServer.getEnterpriseDataFromServer(this.ssid ,data -> {
-            if (data.isEmpty()){
+            if (data == null){
                 Toast.makeText(this,"Failed retrieve data from server", Toast.LENGTH_LONG).show();
                 DesignHelper.showSimpleDialog(this,"Error", "Tenemos problemas al conectarnos a la red WIFI por favor intente nuevamente", "Intentar de nuevo", () -> {
-                    this.startConnectionServer();
+
+                    SSIDConnectionActivity.this.actualSSID.tryReconnect();
+                    this.validateServices();
                 } );
                 return;
             }
 
-            for (EnterPrise item : data)
-            {
-                System.out.println("SSID 2: "+ item.getSsid2_empresa());
-                System.out.println("Password: "+ item.getPassword());
-            }
-
+//            for (EnterPrise item : data)
+//            {
+//                System.out.println("SSID 2: "+ item.getSsid2_empresa());
+//                System.out.println("Password: "+ item.getPassword());
+//            }
+            StorageSingleton.getInstance().setEnterPrise(data);
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
                 SSIDConnectionActivity.this.textLoading.setText("Conectandose a la red WIFI");
-                SSIDConnectionActivity.this.connectToSSID(data.get(0).getSsid2_empresa(), data.get(0).getPassword());
-            }, 3000);
+                SSIDConnectionActivity.this.connectToSSID(data.getSsid2_empresa(), data.getPassword());
+            }, 1000);
 
             //Arrays.asList(data).indexOf( )
         });
@@ -163,14 +172,13 @@ public class SSIDConnectionActivity extends AppCompatActivity {
             {
                 Toast.makeText(this,"Conected to "+ ssid, Toast.LENGTH_LONG).show();
                 this.connectionList.add(connection);
-                this.startActivity(new Intent(this,CustomerRecord.class));
-                this.finish();
+                this.startActivityForResult(new Intent(this,CustomerRecord.class), 0);
             }
             else
             {
                 Toast.makeText(this,"Failed when connect to "+ ssid, Toast.LENGTH_LONG).show();
                 DesignHelper.showSimpleDialog(this,"Error", "Tenemos problemas al conectarnos a la red WIFI por favor intente nuevamente", "Intentar de nuevo", () -> {
-                    this.startConnectionServer();
+                    this.validateServices();
                 } );
             }
         }
@@ -178,4 +186,9 @@ public class SSIDConnectionActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        this.finish();
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }
