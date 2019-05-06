@@ -40,7 +40,7 @@ import java.util.Map;
  */
 
 public class ConnectionServer {
-    private String url = "http://192.168.137.1:80/conectify/api/consulta.php";
+    private String url = GlobalVar.ssidUrl;
     private Activity activity;
     private RequestQueue queue;
 
@@ -65,7 +65,7 @@ public class ConnectionServer {
         }catch (JSONException e) {}
 
 
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, url, null, response -> {
+        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, GlobalVar.ssidUrl, jsonParam, response -> {
 
             try {
                 JSONArray jsonArray = new JSONArray(response.toString());
@@ -105,7 +105,7 @@ public class ConnectionServer {
         }catch (JSONException e) {}
 
 
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, url, jsonParam, response -> {
+        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, GlobalVar.recordUrl, jsonParam, response -> {
 
 //            List<EnterPrise> list = new ArrayList<>();
 //            list.add(new EnterPrise(response));

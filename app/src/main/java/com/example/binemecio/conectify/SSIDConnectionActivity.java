@@ -96,6 +96,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
     private void startConnectionServer()
     {
         textLoading.setText("Recupenrando Información");
+        this.ssid = "red_publica_1";
         connectionServer.getEnterpriseDataFromServer(this.ssid ,data -> {
             if (data == null){
                 Toast.makeText(this,"Failed retrieve data from server", Toast.LENGTH_LONG).show();

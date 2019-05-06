@@ -16,7 +16,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         setContentView(R.layout.activity_splash_screen);
         Handler handler = new Handler();
         handler.postDelayed(() -> {
-            SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, CustomerRecord.class));
+            SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, SSIDConnectionActivity.class));
         }, 3000);
 
     }
