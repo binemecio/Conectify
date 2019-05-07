@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.android.volley.toolbox.HttpResponse;
+import com.example.binemecio.conectify.Singletoon.StorageSingleton;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -180,6 +181,7 @@ public class ConnectionServer {
                 JSONArray jsonArray = new JSONArray(response);
                 JSONObject object = jsonArray.getJSONObject(0);
                 Long value = this.convertToTime(object.getString("tiempo_ciclo"));
+                StorageSingleton.getInstance().setLoopTime(value);
                 result.setData(true, value);
             } catch (JSONException e) {
                 result.setData(false, Long.valueOf(0));
@@ -226,7 +228,7 @@ public class ConnectionServer {
             return valueMiliseconds;
         } catch (ParseException e) {
             e.printStackTrace();
-            return Long.valueOf(0);
+            return Long.valueOf(5000);
         }
 
     }

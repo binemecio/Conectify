@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -33,6 +34,7 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
     private EnterPrise enterPrise;
     private int seconds = 0;
     private boolean isReady = false;
+    private boolean hasClosed = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +94,7 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
 
         handler.postDelayed(() -> {
             isReady = true;
-        }, time);
+        }, time + 1000);
         this.initCountDown();
     }
 
@@ -120,12 +122,14 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
         webView.setOverScrollMode(WebView.OVER_SCROLL_NEVER);
         webView.loadUrl(this.url);
     }
-//
-//    @Override
-//    public void onAttachedToWindow() {
-//        super.onAttachedToWindow();
-//        this.getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
-//    }
+
+    @Override
+    protected void onUserLeaveHint()
+    {
+        // When user presses home page
+        closeActivity();
+        super.onUserLeaveHint();
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -150,8 +154,12 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
 
     private void closeActivity()
     {
-        HelperAd helperAd = new HelperAd(this);
-        helperAd.startEngine();
+        if (!hasClosed)
+        {
+            hasClosed = true;
+            HelperAd helperAd = new HelperAd(this);
+            helperAd.startEngine();
+        }
         this.minimize();
 //        AdActivity.this.setResult(0);
 //        AdActivity.this.finish();

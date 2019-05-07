@@ -54,7 +54,7 @@ public class EnterPrise {
             return valueMiliseconds;
         } catch (ParseException e) {
             e.printStackTrace();
-            return Long.valueOf(0);
+            return Long.valueOf(5000);
         }
 
     }
