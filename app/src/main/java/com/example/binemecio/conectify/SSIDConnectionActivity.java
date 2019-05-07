@@ -64,6 +64,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         {
             DesignHelper.showSimpleDialog(this,"Error", "Por favor habilite la red WIFI", "Habilitar red WIFI", () -> {
                 ConnectionSSID.setEnabledWifi(this);
+                this.validateServices();
             } );
             return;
         }
@@ -72,6 +73,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         {
             DesignHelper.showSimpleDialog(this,"Error", "Es necesario que se conecte a una red WIFI para usar esta aplicación", "Abrir configuración", () -> {
                 SSIDConnectionActivity.this.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+//                this.validateServices();
             } );
             return;
         }
