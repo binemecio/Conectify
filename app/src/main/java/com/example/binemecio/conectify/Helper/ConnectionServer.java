@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -30,6 +31,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,10 +69,10 @@ public class ConnectionServer {
         }catch (JSONException e) {}
 
 
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, GlobalVar.ssidUrl, jsonParam, response -> {
+        StringRequest obreq = new StringRequest(Request.Method.POST, GlobalVar.ssidUrl, response -> {
 
             try {
-                JSONArray jsonArray = new JSONArray(response.toString());
+                JSONArray jsonArray = new JSONArray(response);
                 callback.setDataEnterprise(EnterPrise.getEnterPriseList(jsonArray));
             } catch (JSONException e) {
                 callback.setDataEnterprise(null);
@@ -82,6 +86,28 @@ public class ConnectionServer {
         }
         ){
 
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params2 = new HashMap<String, String>();
+                params2.put("first_ssid", ssid1);
+                return params2;
+            }
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
+
+
+
         };
         // Adds the JSON object request "obreq" to the request queue
         queue.add(obreq);
@@ -90,26 +116,10 @@ public class ConnectionServer {
 
     public void sendRecordDataToServer(ClientRecord record, PassDataResult result)
     {
-        JSONObject jsonParam = new JSONObject();
-        try
-        {
-            jsonParam.put("id_configuracion_empresa", record.getId_configuracion_empresa());
-            jsonParam.put("nombres_cliente", record.getNombres_cliente());
-            jsonParam.put("apellidos_cliente", record.getApellidos_cliente());
-            jsonParam.put("numero_celular", record.getNumero_celular());
-            jsonParam.put("correo_electronico", record.getCorreo_electronico());
-            jsonParam.put("dispositivo_cliente", record.getDispositivo_cliente());
-            jsonParam.put("sistema_operativo_cliente", record.getSistema_operativo_cliente());
 
 
-        }catch (JSONException e) {}
-
-
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, GlobalVar.recordUrl, jsonParam, response -> {
-
-//            List<EnterPrise> list = new ArrayList<>();
-//            list.add(new EnterPrise(response));
-            result.setData(true, response.toString());
+        StringRequest obreq = new StringRequest(Request.Method.POST, GlobalVar.recordUrl, response -> {
+            result.setData(true, response);
 
         }, error -> {
             //System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage());
@@ -117,6 +127,31 @@ public class ConnectionServer {
         }
         ){
 
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params2 = new HashMap<String, String>();
+                params2.put("id_configuracion_empresa", record.getId_configuracion_empresa());
+                params2.put("nombres_cliente", record.getNombres_cliente());
+                params2.put("apellidos_cliente", record.getApellidos_cliente());
+                params2.put("numero_celular", record.getNumero_celular());
+                params2.put("correo_electronico", record.getCorreo_electronico());
+                params2.put("dispositivo_cliente", record.getDispositivo_cliente());
+                params2.put("sistema_operativo_cliente", record.getSistema_operativo_cliente());
+                return params2;
+            }
+
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
         };
         // Adds the JSON object request "obreq" to the request queue
         queue.add(obreq);
@@ -135,16 +170,16 @@ public class ConnectionServer {
         }catch (JSONException e) {}
 
 
-        JsonObjectRequest obreq = new JsonObjectRequest(Request.Method.POST, GlobalVar.adLoopUrl, jsonParam, response -> {
+        StringRequest obreq = new StringRequest(Request.Method.POST, GlobalVar.adLoopUrl, response -> {
 
 //            List<EnterPrise> list = new ArrayList<>();
 //            list.add(new EnterPrise(response));
 
 
             try {
-                JSONArray jsonArray = new JSONArray(response.toString());
+                JSONArray jsonArray = new JSONArray(response);
                 JSONObject object = jsonArray.getJSONObject(0);
-                Long value = object.getLong("tiempo_ciclo");
+                Long value = this.convertToTime(object.getString("tiempo_ciclo"));
                 result.setData(true, value);
             } catch (JSONException e) {
                 result.setData(false, Long.valueOf(0));
@@ -154,17 +189,46 @@ public class ConnectionServer {
 
         }, error -> {
             //System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage());
-
             result.setData(false, Long.valueOf(0));
-
         }
         ){
 
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> params2 = new HashMap<String, String>();
+                params2.put("id_ciclo_lanzamiento_app", id_ciclo);
+                return params2;
+            }
+
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("Content-Type","application/x-www-form-urlencoded");
+                return params;
+            }
         };
         // Adds the JSON object request "obreq" to the request queue
         queue.add(obreq);
     }
 
+    private Long convertToTime(String value){
+        DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+        try {
+            java.sql.Time time = new java.sql.Time(formatter.parse(value).getTime());
+//            long valueTime =  time.getTime();
+            long valueMiliseconds = time.getSeconds() * 1000;
+            return valueMiliseconds;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return Long.valueOf(0);
+        }
 
+    }
 
 }

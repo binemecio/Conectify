@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.binemecio.conectify.GlobalVar.GlobalVar;
+import com.example.binemecio.conectify.Helper.ConnectionSSID;
 import com.example.binemecio.conectify.Helper.ConnectionServer;
 import com.example.binemecio.conectify.Helper.DesignHelper;
 import com.example.binemecio.conectify.Helper.HelperAd;
@@ -46,14 +48,26 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         this.helperAd = new HelperAd(this);
         this.connection = new ConnectionServer(this, GlobalVar.serverUrl);
         // get device info
-        this.deviceInfo = Build.DEVICE + " " + Build.MODEL;
-        this.SOInfo = Build.VERSION.BASE_OS;
+        String manufacturer = Build.MANUFACTURER;
+        String model = Build.MODEL;
+        String versionRelease = Build.VERSION.RELEASE;
+
+        this.deviceInfo = manufacturer + " " + model;
+        this.SOInfo = "Android " + versionRelease;
+        this.record.setDispositivo_cliente(this.deviceInfo);
+        this.record.setSistema_operativo_cliente(this.SOInfo);
+
+
         editTextName = findViewById(R.id.name);
         editTextLastName = findViewById(R.id.lastName);
         editTextPhone = findViewById(R.id.phone);
         editTextEmail = findViewById(R.id.email);
         btnSendRecord = findViewById(R.id.btnSend);
         this.enterPrise = StorageSingleton.getInstance().getEnterPrise();
+        this.record.setId_configuracion_empresa(this.enterPrise.getId_configuracion_empresa());
+
+
+
     }
 
 
@@ -72,6 +86,11 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
     private void assigneEventClick()
     {
         btnSendRecord.setOnClickListener(this);
+
+        this.editTextName.setOnFocusChangeListener(this);
+        this.editTextLastName.setOnFocusChangeListener(this);
+        this.editTextPhone.setOnFocusChangeListener(this);
+        this.editTextEmail.setOnFocusChangeListener(this);
     }
 
     private void loadData()
@@ -80,12 +99,14 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         this.editTextLastName.setText(record.getApellidos_cliente());
         this.editTextPhone.setText(record.getNumero_celular());
         this.editTextEmail.setText(record.getCorreo_electronico());
+
     }
 
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btnSend)
         {
+            this.btnSendRecord.setFocusableInTouchMode(true);
             this.btnSendRecord.setFocusable(true);
             this.btnSendRecord.requestFocus();
             this.sendData(this.record);
@@ -94,6 +115,8 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
 
     private void sendData(ClientRecord record)
     {
+
+
         if (isValidName && isValidLastName && isValidPhone && isValidEmail)
         {
             new Thread(() -> {
@@ -111,13 +134,13 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         {
             String messageField = "";
             if (!isValidName)
-                messageField = "Verifique el campo nombres\n";
+                messageField += "Verifique el campo nombres\n";
             if (!isValidLastName)
-                messageField = "Verifique el campo apellidos\n";
+                messageField += "Verifique el campo apellidos\n";
             if (!isValidPhone)
-                messageField = "Verifique el campo telefono\n";
+                messageField += "Verifique el campo telefono\n";
             if (!isValidEmail)
-                messageField = "Verifique el campo correo\n";
+                messageField += "Verifique el campo correo\n";
             DesignHelper.showSimpleDialog(CustomerRecord.this, "", messageField, () -> {});
         }
     }
@@ -128,6 +151,7 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
+
         this.focusChange(v,hasFocus);
     }
 
@@ -157,22 +181,22 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
             if (view == this.editTextName)
             {
                 this.record.setNombres_cliente(this.editTextName.getText().toString());
-                isValidName = this.helper.isValidName(this.record.getNombres_cliente(), (TextInputEditText)this.editTextName.getParent());
+                isValidName = this.helper.isValidName(helper.getString( this.record.getNombres_cliente()) );
             }
             else if (view == this.editTextLastName)
             {
-                this.record.setNombres_cliente(this.editTextLastName.getText().toString());
-                isValidLastName = this.helper.isValidName(this.record.getNombres_cliente(), (TextInputEditText)this.editTextLastName.getParent());
+                this.record.setApellidos_cliente(helper.getString(this.editTextLastName.getText().toString()));
+                isValidLastName = this.helper.isValidName(this.record.getNombres_cliente());
             }
             else if (view == this.editTextPhone)
             {
-                this.record.setNumero_celular(this.editTextPhone.getText().toString().trim());
-                isValidPhone = this.helper.isValidName(this.record.getNombres_cliente(), (TextInputEditText)this.editTextPhone.getParent());
+                this.record.setNumero_celular(helper.getString(this.editTextPhone.getText().toString().trim()));
+                isValidPhone = this.helper.isValidName(this.record.getNombres_cliente());
             }
             else if (view == this.editTextEmail)
             {
-                this.record.setCorreo_electronico(this.editTextEmail.getText().toString().trim());
-                isValidEmail = this.helper.isValidName(this.record.getNombres_cliente(), (TextInputEditText)this.editTextEmail.getParent());
+                this.record.setCorreo_electronico(helper.getString(this.editTextEmail.getText().toString().trim()));
+                isValidEmail = this.helper.isValidName(this.record.getNombres_cliente());
             }
         }
     }
@@ -192,4 +216,14 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(requestCode, resultCode, data);
 
     }
+
+
+    @Override
+    protected void onDestroy() {
+        String ssid = StorageSingleton.getInstance().getSsid();
+        ConnectionSSID connectionSSID = new ConnectionSSID(this, ssid, "");
+        connectionSSID.tryReconnect();
+        super.onDestroy();
+    }
+
 }

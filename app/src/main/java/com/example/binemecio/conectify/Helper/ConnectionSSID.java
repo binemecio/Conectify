@@ -2,6 +2,7 @@ package com.example.binemecio.conectify.Helper;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiInfo;
@@ -107,11 +108,6 @@ public class ConnectionSSID {
         return this.isConnected();
     }
 
-    public boolean setEnabledWifi()
-    {
-        WifiManager wifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
-        return wifiManager.setWifiEnabled(true);
-    }
 
 
     public static boolean setEnabledWifi(Activity activity)
@@ -165,18 +161,32 @@ public class ConnectionSSID {
     }
 
     // get the name of the currently network connected (empty if there is no record network)
-    public static String getConnectedSSID(Activity context)
-    {
-        String ssid = "";
-        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo(); // permission ACCESS_WIFI_STATE
-        if (WifiInfo.getDetailedStateOf(wifiInfo.getSupplicantState()) == NetworkInfo.DetailedState.CONNECTED) {
-            ssid = wifiInfo.getSSID();
-        }
+//    public static String getConnectedSSID(Activity context)
+//    {
+//        String ssid = "";
+//        WifiManager wifiManager = (WifiManager) context.getApplicationContext().getSystemService(WIFI_SERVICE);
+//        WifiInfo wifiInfo = wifiManager.getConnectionInfo(); // permission ACCESS_WIFI_STATE
+//        if (WifiInfo.getDetailedStateOf(wifiInfo.getSupplicantState()) == NetworkInfo.DetailedState.CONNECTED) {
+//            ssid = wifiInfo.getSSID();
+//        }
+//
+//        return ssid;
+//    }
 
+    public static String getConnectedSSID(Context context) {
+        String ssid = null;
+        Helpers helper = new Helpers();
+        ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (networkInfo.isConnected()) {
+            final WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+            final WifiInfo connectionInfo = wifiManager.getConnectionInfo();
+            if (connectionInfo != null && !helper.isNullOrWhiteSpace(connectionInfo.getSSID())) {
+                ssid = connectionInfo.getSSID();
+            }
+        }
         return ssid;
     }
-
 
     /// verify the state of the wifi
     public static boolean isWifiOpen(Activity context)

@@ -3,6 +3,9 @@ package com.example.binemecio.conectify.Pojo;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,18 +33,31 @@ public class EnterPrise {
             this.ssid2_empresa = json.getString("ssid2_empresa") + "";
             this.password = json.getString("password") + "";
             this.direccion_url = json.getString("direccion_url");
-            this.anuncio_lapso = json.getLong("anuncio_lapso");
-            this.tiempo_ciclo = json.getLong("tiempo_ciclo");
+            this.anuncio_lapso = this.convertToTime(json.getString("anuncio_lapsos"));
+            this.tiempo_ciclo = this.convertToTime( json.getString("tiempo_ciclo"));
             this.id_ciclo_display_anuncios = json.getString("id_ciclo_display_anuncios");
 
             //this.tiempo_ciclo = json.getString("tiempo_ciclo") + "";
         }
         catch (Exception e){
-            System.out.print("Error parse jsonObject");
+            System.out.print("Error parse jsonObject>>>>>>> >>>>>" + e.getMessage() );
         }
     }
 
 
+    private Long convertToTime(String value){
+        DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+        try {
+            java.sql.Time time = new java.sql.Time(formatter.parse(value).getTime());
+//            long valueTime =  time.getTime();
+            long valueMiliseconds = time.getSeconds() * 1000;
+            return valueMiliseconds;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return Long.valueOf(0);
+        }
+
+    }
 
     public static EnterPrise getEnterPriseList(JSONArray jsonArray)
     {

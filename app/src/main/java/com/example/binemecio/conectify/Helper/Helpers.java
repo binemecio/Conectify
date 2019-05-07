@@ -1,6 +1,7 @@
 package com.example.binemecio.conectify.Helper;
 
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.util.Patterns;
 
 import java.util.regex.Pattern;
@@ -64,35 +65,28 @@ public class Helpers {
         return data;
     }
 
-    public boolean isValidName(String nombre, TextInputEditText editText) {
+    public boolean isValidName(String nombre) {
         Pattern patron = Pattern.compile("^[a-zA-Z ]+$");
         if (!patron.matcher(nombre).matches() || nombre.length() > 30) {
-            editText.setError("Nombre inválido");
+
             return false;
-        } else {
-            editText.setError(null);
         }
 
         return true;
     }
 
-    public boolean isValidPhone(String telefono, TextInputEditText editText) {
+    public boolean isValidPhone(String telefono) {
         if (!Patterns.PHONE.matcher(telefono).matches()) {
-            editText.setError("Teléfono inválido");
             return false;
-        } else {
-            editText.setError(null);
         }
 
         return true;
     }
 
-    public boolean esCorreoValido(String correo, TextInputEditText editText) {
+    public boolean esCorreoValido(String correo) {
         if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
-            editText.setError("Correo electrónico inválido");
+
             return false;
-        } else {
-            editText.setError(null);
         }
 
         return true;

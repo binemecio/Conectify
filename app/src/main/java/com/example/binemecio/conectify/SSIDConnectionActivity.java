@@ -39,7 +39,6 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         setContentView(R.layout.loading_layout);
         this.connectionServer = new ConnectionServer(this);
         this.initialice();
-        startConnectionServer();
 
 
         if (getIntent().getBooleanExtra("EXIT", false)) {
@@ -87,9 +86,9 @@ public class SSIDConnectionActivity extends AppCompatActivity {
     protected void onResume() {
 
         super.onResume();
-        if (!this.isConnected) {
-            this.validateServices();
-        }
+//        if (!this.isConnected) {
+//            this.validateServices();
+//        }
 
     }
 

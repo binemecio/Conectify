@@ -134,6 +134,8 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
         return true;
     }
 
+
+
     private void closeActivity()
     {
         AdActivity.this.setResult(0);
