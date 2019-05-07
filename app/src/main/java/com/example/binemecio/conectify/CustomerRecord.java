@@ -218,12 +218,5 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
     }
 
 
-    @Override
-    protected void onDestroy() {
-        String ssid = StorageSingleton.getInstance().getSsid();
-        ConnectionSSID connectionSSID = new ConnectionSSID(this, ssid, "");
-        connectionSSID.tryReconnect();
-        super.onDestroy();
-    }
 
 }

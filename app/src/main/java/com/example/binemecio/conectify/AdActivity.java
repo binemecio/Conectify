@@ -6,11 +6,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.TextView;
 
+import com.example.binemecio.conectify.Helper.ConnectionSSID;
+import com.example.binemecio.conectify.Helper.HelperAd;
 import com.example.binemecio.conectify.Helper.Helpers;
 import com.example.binemecio.conectify.Pojo.Ad;
 import com.example.binemecio.conectify.Pojo.EnterPrise;
@@ -34,6 +37,9 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setType(WindowManager.LayoutParams.TYPE_KEYGUARD_DIALOG);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_ad);
         this.url = getIntent().getStringExtra("url");
         this.url = helper.isNullOrWhiteSpace(this.url) ? defaultUrl : this.url;
@@ -133,14 +139,29 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
         }
         return true;
     }
-
-
+    
+    @Override
+    protected void onDestroy() {
+        String ssid = StorageSingleton.getInstance().getSsid();
+        ConnectionSSID connectionSSID = new ConnectionSSID(this, ssid, "");
+        connectionSSID.tryReconnect();
+        super.onDestroy();
+    }
 
     private void closeActivity()
     {
-        AdActivity.this.setResult(0);
-        AdActivity.this.finish();
+        HelperAd helperAd = new HelperAd(this);
+        helperAd.startEngine();
+        this.minimize();
+//        AdActivity.this.setResult(0);
+//        AdActivity.this.finish();
     }
+
+
+    public void minimize() {
+        this.moveTaskToBack(true);
+    }
+
 
     @Override
     public void onClick(View v) {
