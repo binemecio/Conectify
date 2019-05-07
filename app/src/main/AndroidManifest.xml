@@ -23,7 +23,7 @@
         <activity android:name=".CustomerRecord"
             android:noHistory="true"></activity>
         <activity
-            
+
             android:name=".AdActivity"
             android:noHistory="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
