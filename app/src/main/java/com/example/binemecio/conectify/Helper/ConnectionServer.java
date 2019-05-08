@@ -74,7 +74,14 @@ public class ConnectionServer {
 
             try {
                 JSONArray jsonArray = new JSONArray(response);
-                callback.setDataEnterprise(EnterPrise.getEnterPriseList(jsonArray));
+                if (jsonArray.length() == 0)
+                {
+                    callback.setDataEnterprise(null);
+                }
+                else
+                {
+                    callback.setDataEnterprise(EnterPrise.getEnterPriseList(jsonArray));
+                }
             } catch (JSONException e) {
                 callback.setDataEnterprise(null);
             }

@@ -32,6 +32,9 @@ public class DesignHelper {
         Dialog dialog;
         AlertDialog.Builder builder = getSimpleBuilder(activity,title,message,positiveButton,result);
         dialog = builder.create();
+        dialog.setOnCancelListener(dialog1 -> {
+            activity.finish();
+        });
         dialog.show();
     }
 
@@ -40,6 +43,9 @@ public class DesignHelper {
         Dialog dialog;
         AlertDialog.Builder builder = getSimpleBuilder(activity,title,message,result);
         dialog = builder.create();
+        dialog.setOnCancelListener(dialog1 -> {
+            activity.finish();
+        });
         dialog.show();
     }
 
@@ -59,7 +65,9 @@ public class DesignHelper {
         if(!helper.isNullOrWhiteSpace(title)) builder.setTitle(title);
         if(!helper.isNullOrWhiteSpace(message)) builder.setMessage(message);
         builder.setPositiveButton(positiveButton,(dialog1, which) -> { result.notificate(); });
-        builder.setNegativeButton("Cancelar",null);
+        builder.setNegativeButton("Cancelar",(dialog, which) -> {
+            activity.finish();
+        });
         return builder;
     }
 
