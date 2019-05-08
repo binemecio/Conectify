@@ -28,6 +28,7 @@
             android:noHistory="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
+            android:noHistory="true"
             android:name=".SplashScreenActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
