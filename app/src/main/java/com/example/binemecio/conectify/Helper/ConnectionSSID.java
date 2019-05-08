@@ -108,8 +108,6 @@ public class ConnectionSSID {
         return this.isConnected();
     }
 
-
-
     public static boolean setEnabledWifi(Activity activity)
     {
         WifiManager wifiManager = (WifiManager)activity.getApplicationContext().getSystemService(WIFI_SERVICE);
@@ -120,12 +118,23 @@ public class ConnectionSSID {
     public boolean tryReconnect(String ssid)
     {
         WifiManager wifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
+
+        if ((wifiManager.isWifiEnabled() == false)) {
+            Toast.makeText(this.context, "Encendiendo WIFI...", Toast.LENGTH_LONG).show();
+
+            // is necesary manage the permission for api > 21
+            wifiManager.setWifiEnabled(true);
+        }
+
+
         int netId = -1;
         for (WifiConfiguration tmp : wifiManager.getConfiguredNetworks())// // permission ACCESS_WIFI_STATE
             if (tmp.SSID.equals( "\""+ssid+"\""))
             {
+                wifiManager.disconnect();
                 netId = tmp.networkId;
                 wifiManager.enableNetwork(netId, true);
+                wifiManager.reconnect();
             }
 
         return this.isConnected();

@@ -73,7 +73,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         {
             DesignHelper.showSimpleDialog(this,"Error", "Es necesario que se conecte a una red WIFI para usar esta aplicación", "Abrir configuración", () -> {
                 SSIDConnectionActivity.this.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-//                this.validateServices();
+                this.validateServices();
             } );
             return;
         }
@@ -97,7 +97,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
     private void startConnectionServer()
     {
         textLoading.setText("Recupenrando Información");
-        this.ssid = "red_publica_1";
+
         connectionServer.getEnterpriseDataFromServer(this.ssid ,data -> {
             if (data == null){
                 Toast.makeText(this,"Failed retrieve data from server", Toast.LENGTH_LONG).show();
