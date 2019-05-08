@@ -148,6 +148,7 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
     protected void onDestroy() {
         String ssid = StorageSingleton.getInstance().getSsid();
         ConnectionSSID connectionSSID = new ConnectionSSID(this, ssid, "");
+        connectionSSID.disconnectCurrentNetwork();
         connectionSSID.tryReconnect();
         super.onDestroy();
     }

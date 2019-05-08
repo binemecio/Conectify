@@ -98,7 +98,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
     {
         textLoading.setText("Recupenrando Información");
 
-        connectionServer.getEnterpriseDataFromServer(this.ssid ,data -> {
+        connectionServer.getEnterpriseDataFromServer(this.ssid.replace("\"","") ,data -> {
             if (data == null){
                 Toast.makeText(this,"Failed retrieve data from server", Toast.LENGTH_LONG).show();
                 DesignHelper.showSimpleDialog(this,"Error", "Tenemos problemas al conectarnos a la red WIFI por favor intente nuevamente", "Intentar de nuevo", () -> {

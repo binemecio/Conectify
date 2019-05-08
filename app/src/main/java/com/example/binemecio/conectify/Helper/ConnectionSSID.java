@@ -169,6 +169,17 @@ public class ConnectionSSID {
         return ConnectionSSID.getConnectedSSID(this.context) == this.networkSSID;
     }
 
+    public boolean disconnectCurrentNetwork(){
+
+        WifiManager mWifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
+        if(mWifiManager != null && mWifiManager.isWifiEnabled()){
+            int netId = mWifiManager.getConnectionInfo().getNetworkId();
+            mWifiManager.disableNetwork(netId);
+            return mWifiManager.disconnect();
+        }
+        return false;
+    }
+
     // get the name of the currently network connected (empty if there is no record network)
 //    public static String getConnectedSSID(Activity context)
 //    {
