@@ -154,14 +154,14 @@ public class SSIDConnectionActivity extends AppCompatActivity {
 
     private void connectToSSID(String ssid, String password)
     {
-        ConnectionSSID connection = new ConnectionSSID(this,ssid,password);
+        ConnectionSSID connection = new ConnectionSSID(this, ssid, password);
 
         boolean isConnected = connection.tryHiddenConnection();
 
 
         if(isConnected)
         {
-            Toast.makeText(this,"Conected to "+ ssid, Toast.LENGTH_LONG).show();
+            Toast.makeText(this,"Conectado a "+ ssid, Toast.LENGTH_LONG).show();
             this.startActivity(new Intent(this,CustomerRecord.class));
             this.connectionList.add(connection);
             this.connectionList.add(connection);
@@ -172,7 +172,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
 
             if (isConnected)
             {
-                Toast.makeText(this,"Conected to "+ ssid, Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Conectado a "+ ssid, Toast.LENGTH_LONG).show();
                 this.connectionList.add(connection);
                 this.startActivityForResult(new Intent(this,CustomerRecord.class), 0);
             }

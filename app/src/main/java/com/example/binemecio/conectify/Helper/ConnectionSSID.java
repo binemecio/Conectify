@@ -175,6 +175,7 @@ public class ConnectionSSID {
         if(mWifiManager != null && mWifiManager.isWifiEnabled()){
             int netId = mWifiManager.getConnectionInfo().getNetworkId();
             mWifiManager.disableNetwork(netId);
+            mWifiManager.removeNetwork(netId);
             return mWifiManager.disconnect();
         }
         return false;
