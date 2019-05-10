@@ -3,6 +3,7 @@ package com.example.binemecio.conectify;
 import android.content.Intent;
 import android.os.Build;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -66,6 +67,15 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         this.enterPrise = StorageSingleton.getInstance().getEnterPrise();
         this.record.setId_configuracion_empresa(this.enterPrise.getId_configuracion_empresa());
 
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            if(StorageSingleton.getInstance().getSsid2() == "")
+            {
+                DesignHelper.showSimpleDialog(this,"Atencion!","No logramos conectarnos a la red wifi esperada, desea seguir utilizando la aplicación?", "Continuar", () -> {
+
+                });
+            }
+        }, 2000);
 
 
     }

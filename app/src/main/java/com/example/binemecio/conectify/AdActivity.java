@@ -1,6 +1,9 @@
 package com.example.binemecio.conectify;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,15 +17,17 @@ import android.webkit.WebViewClient;
 import android.widget.TextView;
 
 import com.example.binemecio.conectify.Helper.ConnectionSSID;
+import com.example.binemecio.conectify.Helper.DesignHelper;
 import com.example.binemecio.conectify.Helper.HelperAd;
 import com.example.binemecio.conectify.Helper.Helpers;
+import com.example.binemecio.conectify.Helper.NetworkUtil;
 import com.example.binemecio.conectify.Pojo.Ad;
 import com.example.binemecio.conectify.Pojo.EnterPrise;
 import com.example.binemecio.conectify.Singletoon.StorageSingleton;
 
 import java.util.List;
 
-public class AdActivity extends AppCompatActivity implements View.OnClickListener {
+public class AdActivity extends AppCompatActivity  implements View.OnClickListener {
     private static String defaultUrl = "https://www.google.com";
     private Helpers helper = new Helpers();
     private WebView webView;
@@ -73,8 +78,45 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
         this.assigneEventClick();
         // here is the initialize the ad
         this.initSetupAdd();
+        if (!StorageSingleton.getInstance().isContinueUse())
+        {
+            this.verifyConnection();
+        }
         //StorageSingleton.getInstance().getEnterPrise()
     }
+
+    private void verifyConnection()
+    {
+        String privateSSID = StorageSingleton.getInstance().getSsid2();
+        if (!ConnectionSSID.isEqualToCurrentNetwork(this, privateSSID))
+        {
+            DesignHelper.showSimpleDialog(this,"Atencion","La aplicación no esta conectada a una red o no esta conectada a la red esperada\n\n¿Desea seguir usando la aplicación?","Continuar","Salir",() -> {
+                StorageSingleton.getInstance().setContinueUse(true);
+            }, () -> {
+
+            });
+        }
+
+    }
+
+
+//    @Override
+//    public void onReceive(Context context, Intent intent) {
+//
+//        int status = NetworkUtil.getConnectivityStatusString(context);
+//        if ("android.net.conn.CONNECTIVITY_CHANGE".equals(intent.getAction())) {
+//            if (status == NetworkUtil.NETWORK_STATUS_NOT_CONNECTED) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                    this.finishAndRemoveTask();
+//                }
+//                else
+//                {
+//                    this.finishAffinity();
+//                }
+//            }
+//        }
+//    }
+
 
     private void initialize()
     {
@@ -146,11 +188,16 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
     
     @Override
     protected void onDestroy() {
-        String ssid = StorageSingleton.getInstance().getSsid();
+        this.removeNetwork();
+        super.onDestroy();
+    }
+
+    private void removeNetwork()
+    {
+        String ssid = StorageSingleton.getInstance().getSsid2();
         ConnectionSSID connectionSSID = new ConnectionSSID(this, ssid, "");
         connectionSSID.disconnectCurrentNetwork();
         connectionSSID.tryReconnect();
-        super.onDestroy();
     }
 
     private void closeActivity()
@@ -180,4 +227,7 @@ public class AdActivity extends AppCompatActivity implements View.OnClickListene
                 AdActivity.this.closeActivity();
         }
     }
+
+
+
 }

@@ -19,11 +19,29 @@ public class StorageSingleton {
         return instance;
     }
 
-    private String ssid = "";
+    private String ssid = "", ssid2 = "";
     private ClientRecord clientRecord;
     private EnterPrise enterPrise;
     public Long loopTime = Long.valueOf(10000);
     public int indexAd = 0;
+    private boolean continueUse = false;
+
+
+    public String getSsid2() {
+        return ssid2;
+    }
+
+    public void setSsid2(String ssid2) {
+        this.ssid2 = ssid2;
+    }
+
+    public boolean isContinueUse() {
+        return continueUse;
+    }
+
+    public void setContinueUse(boolean continueUse) {
+        this.continueUse = continueUse;
+    }
 
     public int getIndexAd() {
         return indexAd;

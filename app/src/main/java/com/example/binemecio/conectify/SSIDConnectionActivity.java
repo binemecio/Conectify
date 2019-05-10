@@ -37,6 +37,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loading_layout);
+        this.removeNetwork();
         this.connectionServer = new ConnectionServer(this);
         this.initialice();
 
@@ -125,6 +126,16 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         });
     }
 
+    private void removeNetwork()
+    {
+        String ssid = StorageSingleton.getInstance().getSsid2();
+        if (helper.isNullOrWhiteSpace(ssid))
+            return;
+        ConnectionSSID connectionSSID = new ConnectionSSID(this, ssid, "");
+        connectionSSID.disconnectCurrentNetwork();
+        connectionSSID.tryReconnect();
+    }
+
     private void registerTheCurrentNetwork(String ssid, String password)
     {
         ConnectionSSID connection = new ConnectionSSID(this,ssid, password);
@@ -154,6 +165,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
 
     private void connectToSSID(String ssid, String password)
     {
+        StorageSingleton.getInstance().setSsid2(ssid);
         ConnectionSSID connection = new ConnectionSSID(this, ssid, password);
 
         boolean isConnected = connection.tryHiddenConnection();

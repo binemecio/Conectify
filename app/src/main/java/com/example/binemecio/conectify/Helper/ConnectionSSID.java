@@ -176,6 +176,7 @@ public class ConnectionSSID {
             int netId = mWifiManager.getConnectionInfo().getNetworkId();
             mWifiManager.disableNetwork(netId);
             mWifiManager.removeNetwork(netId);
+            mWifiManager.saveConfiguration();
             return mWifiManager.disconnect();
         }
         return false;
@@ -207,6 +208,12 @@ public class ConnectionSSID {
             }
         }
         return ssid;
+    }
+
+    public static boolean isEqualToCurrentNetwork(Activity activity, String ssid)
+    {
+        String connectedSSID =  getConnectedSSID(activity).replace("\"", "");
+        return isWifiOpen(activity) && connectedSSID == ssid;
     }
 
     /// verify the state of the wifi
