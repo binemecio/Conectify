@@ -194,7 +194,7 @@ public class AdActivity extends AppCompatActivity  implements View.OnClickListen
 
     private void removeNetwork()
     {
-        String ssid = StorageSingleton.getInstance().getSsid2();
+        String ssid = StorageSingleton.getInstance().getSsid();
         ConnectionSSID connectionSSID = new ConnectionSSID(this, ssid, "");
         connectionSSID.disconnectCurrentNetwork();
         connectionSSID.tryReconnect();

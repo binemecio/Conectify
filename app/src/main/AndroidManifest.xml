@@ -7,12 +7,9 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.DISABLE_KEYGUARD"></uses-permission>
-
-
+    <uses-permission android:name="android.permission.DISABLE_KEYGUARD" />
 
     <application
-
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -21,17 +18,17 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".SSIDConnectionActivity"
-            android:noHistory="true"></activity>
-        <activity android:name=".CustomerRecord"
-            android:noHistory="true"></activity>
+            android:noHistory="true" />
         <activity
-
+            android:name=".CustomerRecord"
+            android:noHistory="true" />
+        <activity
             android:name=".AdActivity"
             android:noHistory="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
-            android:noHistory="true"
             android:name=".SplashScreenActivity"
+            android:noHistory="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -43,7 +40,9 @@
         <service
             android:name=".Service.MyService"
             android:enabled="true"
-            android:exported="false"></service>
+            android:exported="false" />
+
+        <activity android:name=".Test.TestActivity"></activity>
     </application>
 
 </manifest>

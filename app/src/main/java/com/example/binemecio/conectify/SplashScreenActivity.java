@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import com.example.binemecio.conectify.Helper.ConnectionSSID;
 import com.example.binemecio.conectify.Singletoon.StorageSingleton;
+import com.example.binemecio.conectify.Test.TestActivity;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -15,10 +16,12 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
         Handler handler = new Handler();
+//        handler.postDelayed(() -> {
+//            SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, SSIDConnectionActivity.class));
+//        }, 3000);
         handler.postDelayed(() -> {
-            SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, SSIDConnectionActivity.class));
+            SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, TestActivity.class));
         }, 3000);
-
     }
 
     @Override

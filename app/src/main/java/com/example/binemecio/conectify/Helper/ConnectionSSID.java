@@ -1,17 +1,15 @@
 package com.example.binemecio.conectify.Helper;
 
-import android.app.Activity;
-import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
-import android.net.wifi.WifiConfiguration;
-import android.net.wifi.WifiInfo;
-import android.net.wifi.WifiManager;
-import android.widget.Toast;
-
-import java.util.List;
-
-import static android.content.Context.WIFI_SERVICE;
+        import android.app.Activity;
+        import android.content.Context;
+        import android.net.ConnectivityManager;
+        import android.net.NetworkInfo;
+        import android.net.wifi.WifiConfiguration;
+        import android.net.wifi.WifiInfo;
+        import android.net.wifi.WifiManager;
+        import android.widget.Toast;
+        import java.util.List;
+        import static android.content.Context.WIFI_SERVICE;
 
 /**
  * Created by binemecio on 29/4/2019.
@@ -174,8 +172,8 @@ public class ConnectionSSID {
         WifiManager mWifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
         if(mWifiManager != null && mWifiManager.isWifiEnabled()){
             int netId = mWifiManager.getConnectionInfo().getNetworkId();
-            mWifiManager.disableNetwork(netId);
             mWifiManager.removeNetwork(netId);
+            mWifiManager.disableNetwork(netId);
             mWifiManager.saveConfiguration();
             return mWifiManager.disconnect();
         }
@@ -213,7 +211,7 @@ public class ConnectionSSID {
     public static boolean isEqualToCurrentNetwork(Activity activity, String ssid)
     {
         String connectedSSID =  getConnectedSSID(activity).replace("\"", "");
-        return isWifiOpen(activity) && connectedSSID == ssid;
+        return connectedSSID == ssid.replace("\"", "");
     }
 
     /// verify the state of the wifi
