@@ -85,11 +85,8 @@ public class ConnectionServer {
             } catch (JSONException e) {
                 callback.setDataEnterprise(null);
             }
-
-
         }, error -> {
             System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage());
-
             callback.setDataEnterprise(null);
         }
         ){

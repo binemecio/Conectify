@@ -19,8 +19,8 @@ public class ConnectionSSID {
     private String networkSSID = "";
     private String networkPass = "";
     private WifiConfiguration conf = new WifiConfiguration();
-    private Activity context;
-    public ConnectionSSID(Activity context)
+    private Context context;
+    public ConnectionSSID(Context context)
     {
         this.context = context;
     }
@@ -180,6 +180,31 @@ public class ConnectionSSID {
         return false;
     }
 
+    public boolean disconnectNetwork(String ssid){
+        WifiManager mWifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
+
+        int netId = -1;
+        for (WifiConfiguration tmp : mWifiManager.getConfiguredNetworks())// // permission ACCESS_WIFI_STATE
+            if (tmp.SSID.equals( "\""+ssid+"\""))
+            {
+                netId = tmp.networkId;
+                break;
+            }
+
+
+
+        if(mWifiManager != null && mWifiManager.isWifiEnabled()){
+            int netId2= mWifiManager.getConnectionInfo().getNetworkId();
+            if (netId != netId2)
+                return false;
+            mWifiManager.removeNetwork(netId);
+            mWifiManager.disableNetwork(netId);
+            mWifiManager.saveConfiguration();
+            return mWifiManager.disconnect();
+        }
+        return false;
+    }
+
     // get the name of the currently network connected (empty if there is no record network)
 //    public static String getConnectedSSID(Activity context)
 //    {
@@ -194,7 +219,7 @@ public class ConnectionSSID {
 //    }
 
     public static String getConnectedSSID(Context context) {
-        String ssid = null;
+        String ssid = "";
         Helpers helper = new Helpers();
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
@@ -210,8 +235,12 @@ public class ConnectionSSID {
 
     public static boolean isEqualToCurrentNetwork(Activity activity, String ssid)
     {
+        if (ssid == null){
+            return false;
+        }
         String connectedSSID =  getConnectedSSID(activity).replace("\"", "");
-        return connectedSSID == ssid.replace("\"", "");
+        ssid = ssid.replace("\"", "");
+        return connectedSSID.equals(ssid);
     }
 
     /// verify the state of the wifi

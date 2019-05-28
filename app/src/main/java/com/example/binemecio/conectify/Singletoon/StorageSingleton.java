@@ -25,6 +25,8 @@ public class StorageSingleton {
     public Long loopTime = Long.valueOf(10000);
     public int indexAd = 0;
     private boolean continueUse = false;
+    private boolean isFinish = false;
+
 
 
     public String getSsid2() {
@@ -37,6 +39,14 @@ public class StorageSingleton {
 
     public boolean isContinueUse() {
         return continueUse;
+    }
+
+    public boolean isFinish() {
+        return isFinish;
+    }
+
+    public void setFinish(boolean finish) {
+        isFinish = finish;
     }
 
     public void setContinueUse(boolean continueUse) {

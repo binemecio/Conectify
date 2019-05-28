@@ -129,16 +129,9 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
 
         if (isValidName && isValidLastName && isValidPhone && isValidEmail)
         {
-            new Thread(() -> {
-                this.connection.sendRecordDataToServer(this.record,(result, message) -> {
 
-                    CustomerRecord.this.runOnUiThread(() -> {
-                        this.minimize();
-                        this.isStarted = true;
-                        this.helperAd.startEngine();
-                    });
-                });
-            }).start();
+            this.minimize();
+            this.startActivity(new Intent(this,DashBoardActivity.class));
         }
         else
         {
@@ -196,17 +189,17 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
             else if (view == this.editTextLastName)
             {
                 this.record.setApellidos_cliente(helper.getString(this.editTextLastName.getText().toString()));
-                isValidLastName = this.helper.isValidName(this.record.getNombres_cliente());
+                isValidLastName = this.helper.isValidName(this.record.getApellidos_cliente());
             }
             else if (view == this.editTextPhone)
             {
                 this.record.setNumero_celular(helper.getString(this.editTextPhone.getText().toString().trim()));
-                isValidPhone = this.helper.isValidName(this.record.getNombres_cliente());
+                isValidPhone = this.helper.isValidPhone(this.record.getNumero_celular());
             }
             else if (view == this.editTextEmail)
             {
                 this.record.setCorreo_electronico(helper.getString(this.editTextEmail.getText().toString().trim()));
-                isValidEmail = this.helper.isValidName(this.record.getNombres_cliente());
+                isValidEmail = this.helper.isValidEmail(helper.getString(this.record.getCorreo_electronico()));
             }
         }
     }
@@ -222,11 +215,23 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         this.minimize();
-        helperAd.startEngine();
+        if (resultCode == 1)
+        {
+            Helpers helper = new Helpers();
+            String ssid = helper.getString(StorageSingleton.getInstance().getSsid());
+            String ssid2 = helper.getString(StorageSingleton.getInstance().getSsid2());
+            ConnectionSSID connectionSSID = new ConnectionSSID(this);
+            connectionSSID.setNetworkSSID(ssid);
+            connectionSSID.disconnectNetwork(ssid2);
+            connectionSSID.tryReconnect();
+            this.finish();
+        }
         super.onActivityResult(requestCode, resultCode, data);
 
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }

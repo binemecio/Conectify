@@ -9,6 +9,8 @@ import android.os.Handler;
 import android.os.IBinder;
 
 import com.example.binemecio.conectify.AdActivity;
+import com.example.binemecio.conectify.Helper.ConnectionSSID;
+import com.example.binemecio.conectify.Helper.Helpers;
 import com.example.binemecio.conectify.R;
 import com.example.binemecio.conectify.Singletoon.StorageSingleton;
 
@@ -39,19 +41,35 @@ public class MyService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        this.loopAd = StorageSingleton.getInstance().getLoopTime();
-
-        handler.postDelayed(() -> {
-            Intent startIntent = new Intent(getApplicationContext(), AdActivity.class);
-            this.startActivity(startIntent);
-        }, this.loopAd);
-
+//        this.loopAd = StorageSingleton.getInstance().getLoopTime();
+//
+//        handler.postDelayed(() -> {
+//            Intent startIntent = new Intent(getApplicationContext(), AdActivity.class);
+//            this.startActivity(startIntent);
+//        }, this.loopAd);
+//
 
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    public void onTaskRemoved(Intent rootIntent) {
+
+        //unregister listeners
+        //do any other cleanup if required
+
+        //stop service
+        stopSelf();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        Helpers helper = new Helpers();
+        String ssid = helper.getString(StorageSingleton.getInstance().getSsid());
+        String ssid2 = helper.getString(StorageSingleton.getInstance().getSsid2());
+        ConnectionSSID connectionSSID = new ConnectionSSID(this);
+        connectionSSID.setNetworkSSID(ssid);
+        connectionSSID.disconnectNetwork(ssid2);
+        connectionSSID.tryReconnect();
     }
 }

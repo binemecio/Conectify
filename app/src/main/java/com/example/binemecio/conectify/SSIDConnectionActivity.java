@@ -54,7 +54,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         spinKitView = findViewById(R.id.spin_kit);
         this.ssid = ConnectionSSID.getConnectedSSID(this);
         this.actualSSID = new ConnectionSSID(this);
-        StorageSingleton.getInstance().setSsid(this.actualSSID.getNetworkSSID());
+        StorageSingleton.getInstance().setSsid(ConnectionSSID.getConnectedSSID(this));
         this.validateServices();
     }
 
@@ -116,6 +116,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
 //                System.out.println("Password: "+ item.getPassword());
 //            }
             StorageSingleton.getInstance().setEnterPrise(data);
+            StorageSingleton.getInstance().setSsid2(data.getSsid2_empresa());
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
                 SSIDConnectionActivity.this.textLoading.setText("Conectandose a la red WIFI");

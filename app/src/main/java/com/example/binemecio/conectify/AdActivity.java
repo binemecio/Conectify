@@ -88,12 +88,14 @@ public class AdActivity extends AppCompatActivity  implements View.OnClickListen
     private void verifyConnection()
     {
         String privateSSID = StorageSingleton.getInstance().getSsid2();
-        if (!ConnectionSSID.isEqualToCurrentNetwork(this, privateSSID))
+        if (!ConnectionSSID.isEqualToCurrentNetwork(this, helper.getString(privateSSID)))
         {
-            DesignHelper.showSimpleDialog(this,"Atencion","La aplicación no esta conectada a una red o no esta conectada a la red esperada\n\n¿Desea seguir usando la aplicación?","Continuar","Salir",() -> {
-                StorageSingleton.getInstance().setContinueUse(true);
+            DesignHelper.showSimpleDialog(this,"Atencion","La aplicación no esta conectada a una red o no esta conectada a la red esperada","Salir","",() -> {
+                AdActivity.this.setResult(0);
+                AdActivity.this.finish();
             }, () -> {
-
+                AdActivity.this.setResult(0);
+                AdActivity.this.finish();
             });
         }
 
@@ -185,20 +187,59 @@ public class AdActivity extends AppCompatActivity  implements View.OnClickListen
         }
         return true;
     }
-    
-    @Override
-    protected void onDestroy() {
-        this.removeNetwork();
-        super.onDestroy();
-    }
 
-    private void removeNetwork()
-    {
-        String ssid = StorageSingleton.getInstance().getSsid();
-        ConnectionSSID connectionSSID = new ConnectionSSID(this, ssid, "");
-        connectionSSID.disconnectCurrentNetwork();
-        connectionSSID.tryReconnect();
-    }
+
+//
+//    @Override
+//    protected void onPause() {
+//        super.onPause();
+//        boolean isFinishActivity = StorageSingleton.getInstance().isFinish();
+//
+//        if (isFinishing()) {
+//            StorageSingleton.getInstance().setFinish(true);
+//            String ssid = StorageSingleton.getInstance().getSsid();
+//            ConnectionSSID connectionSSID = new ConnectionSSID(this);
+//            connectionSSID.setNetworkSSID(ssid);
+//            connectionSSID.disconnectCurrentNetwork();
+//            connectionSSID.tryReconnect();
+//        }
+//    }
+//
+//    @Override
+//    protected void onStop() {
+//        super.onStop();
+//        if (isFinishing()) {
+//            StorageSingleton.getInstance().setFinish(true);
+//            String ssid = StorageSingleton.getInstance().getSsid();
+//            ConnectionSSID connectionSSID = new ConnectionSSID(this);
+//            connectionSSID.setNetworkSSID(ssid);
+//            connectionSSID.disconnectCurrentNetwork();
+//            connectionSSID.tryReconnect();
+//        }
+//    }
+//
+//    @Override
+//    protected void onDestroy() {
+//        super.onDestroy();
+//        if (isFinishing()) {
+//            StorageSingleton.getInstance().setFinish(true);
+//            String ssid = StorageSingleton.getInstance().getSsid();
+//            ConnectionSSID connectionSSID = new ConnectionSSID(this);
+//            connectionSSID.setNetworkSSID(ssid);
+//            connectionSSID.disconnectCurrentNetwork();
+//            connectionSSID.tryReconnect();
+//        }
+//    }
+//
+//    @Override
+//    public void finish() {
+//        super.finish();
+//        String ssid = StorageSingleton.getInstance().getSsid();
+//        ConnectionSSID connectionSSID = new ConnectionSSID(this);
+//        connectionSSID.setNetworkSSID(ssid);
+//        connectionSSID.disconnectCurrentNetwork();
+//        connectionSSID.tryReconnect();
+//    }
 
     private void closeActivity()
     {

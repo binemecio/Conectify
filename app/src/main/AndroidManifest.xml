@@ -21,7 +21,7 @@
             android:noHistory="true" />
         <activity
             android:name=".CustomerRecord"
-            android:noHistory="true" />
+            android:noHistory="false" />
         <activity
             android:name=".AdActivity"
             android:noHistory="false"
@@ -40,9 +40,14 @@
         <service
             android:name=".Service.MyService"
             android:enabled="true"
+            android:stopWithTask="false"
             android:exported="false" />
 
-        <activity android:name=".Test.TestActivity"></activity>
+        <activity android:name=".Test.TestActivity" />
+        <activity android:name=".DashBoardActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:noHistory="false"
+            ></activity>
     </application>
 
 </manifest>

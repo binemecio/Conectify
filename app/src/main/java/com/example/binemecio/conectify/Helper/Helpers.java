@@ -83,7 +83,7 @@ public class Helpers {
         return true;
     }
 
-    public boolean esCorreoValido(String correo) {
+    public boolean isValidEmail(String correo) {
         if (!Patterns.EMAIL_ADDRESS.matcher(correo).matches()) {
 
             return false;

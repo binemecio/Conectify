@@ -51,6 +51,7 @@ public class DesignHelper {
         AlertDialog.Builder builder = getSimpleBuilder(activity,title,message,positiveButton,negativeButton,resultOk);
         dialog = builder.create();
         dialog.setOnCancelListener(dialog1 -> {
+            resultCancel.notificate();
             activity.finish();
         });
         dialog.show();
