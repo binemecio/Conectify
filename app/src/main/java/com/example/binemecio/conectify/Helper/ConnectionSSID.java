@@ -8,6 +8,9 @@ package com.example.binemecio.conectify.Helper;
         import android.net.wifi.WifiInfo;
         import android.net.wifi.WifiManager;
         import android.widget.Toast;
+
+        import com.example.binemecio.conectify.Singletoon.StorageSingleton;
+
         import java.util.List;
         import static android.content.Context.WIFI_SERVICE;
 
@@ -180,29 +183,47 @@ public class ConnectionSSID {
         return false;
     }
 
-    public boolean disconnectNetwork(String ssid){
+    public int getNetWorkID()
+    {
         WifiManager mWifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
 
         int netId = -1;
         for (WifiConfiguration tmp : mWifiManager.getConfiguredNetworks())// // permission ACCESS_WIFI_STATE
-            if (tmp.SSID.equals( "\""+ssid+"\""))
+            if (tmp.SSID.equals( "\""+this.networkSSID+"\""))
             {
                 netId = tmp.networkId;
                 break;
             }
+            return netId;
+    }
+
+    public boolean disconnectNetwork(String ssid){
+        WifiManager mWifiManager = (WifiManager)this.context.getApplicationContext().getSystemService(WIFI_SERVICE);
+
+        int netId = StorageSingleton.getInstance().getNetId();
+        mWifiManager.removeNetwork(netId);
+        mWifiManager.disableNetwork(netId);
+        mWifiManager.saveConfiguration();
+        return mWifiManager.disconnect();
+//        for (WifiConfiguration tmp : mWifiManager.getConfiguredNetworks())// // permission ACCESS_WIFI_STATE
+//            if (tmp.SSID.equals( "\""+ssid+"\""))
+//            {
+//                netId = tmp.networkId;
+//                break;
+//            }
 
 
 
-        if(mWifiManager != null && mWifiManager.isWifiEnabled()){
-            int netId2= mWifiManager.getConnectionInfo().getNetworkId();
-            if (netId != netId2)
-                return false;
-            mWifiManager.removeNetwork(netId);
-            mWifiManager.disableNetwork(netId);
-            mWifiManager.saveConfiguration();
-            return mWifiManager.disconnect();
-        }
-        return false;
+//        if(mWifiManager != null && mWifiManager.isWifiEnabled()){
+//            int netId2= mWifiManager.getConnectionInfo().getNetworkId();
+//            if (netId != netId2)
+//                return false;
+//            mWifiManager.removeNetwork(netId);
+//            mWifiManager.disableNetwork(netId);
+//            mWifiManager.saveConfiguration();
+//            return mWifiManager.disconnect();
+//        }
+//        return false;
     }
 
     // get the name of the currently network connected (empty if there is no record network)

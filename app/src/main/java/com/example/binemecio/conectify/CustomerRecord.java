@@ -46,6 +46,7 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
 
     private void initialize()
     {
+        this.record = new ClientRecord();
         this.helperAd = new HelperAd(this);
         this.connection = new ConnectionServer(this, GlobalVar.serverUrl);
         // get device info
@@ -131,7 +132,7 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         {
 
             this.minimize();
-            this.startActivity(new Intent(this,DashBoardActivity.class));
+            this.startActivityForResult(new Intent(this,DashBoardActivity.class),0);
         }
         else
         {
@@ -215,7 +216,7 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         this.minimize();
-        if (resultCode == 1)
+        if (resultCode == 0)
         {
             Helpers helper = new Helpers();
             String ssid = helper.getString(StorageSingleton.getInstance().getSsid());
@@ -232,6 +233,13 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
 
     @Override
     protected void onDestroy() {
+        Helpers helper = new Helpers();
+        String ssid = helper.getString(StorageSingleton.getInstance().getSsid());
+        String ssid2 = helper.getString(StorageSingleton.getInstance().getSsid2());
+        ConnectionSSID connectionSSID = new ConnectionSSID(this);
+        connectionSSID.setNetworkSSID(ssid);
+        connectionSSID.disconnectNetwork(ssid2);
+        connectionSSID.tryReconnect();
         super.onDestroy();
     }
 }

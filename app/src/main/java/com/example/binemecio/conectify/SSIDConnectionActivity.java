@@ -174,6 +174,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
 
         if(isConnected)
         {
+            StorageSingleton.getInstance().setNetId(connection.getNetWorkID());
             Toast.makeText(this,"Conectado a "+ ssid, Toast.LENGTH_LONG).show();
             this.startActivity(new Intent(this,CustomerRecord.class));
             this.connectionList.add(connection);
@@ -187,6 +188,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
             {
                 Toast.makeText(this,"Conectado a "+ ssid, Toast.LENGTH_LONG).show();
                 this.connectionList.add(connection);
+                StorageSingleton.getInstance().setNetId(connection.getNetWorkID());
                 this.startActivityForResult(new Intent(this,CustomerRecord.class), 0);
             }
             else
@@ -197,6 +199,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
                 } );
             }
         }
+
 
 
     }

@@ -29,6 +29,10 @@ public class DashBoardActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == 0)
+        {
+            this.finish();
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 

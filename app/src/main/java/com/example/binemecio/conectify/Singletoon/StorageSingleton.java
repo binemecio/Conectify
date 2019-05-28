@@ -26,8 +26,15 @@ public class StorageSingleton {
     public int indexAd = 0;
     private boolean continueUse = false;
     private boolean isFinish = false;
+    private int netId = 0;
 
+    public int getNetId() {
+        return netId;
+    }
 
+    public void setNetId(int netId) {
+        this.netId = netId;
+    }
 
     public String getSsid2() {
         return ssid2;
