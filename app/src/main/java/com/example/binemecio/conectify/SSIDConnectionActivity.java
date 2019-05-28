@@ -54,7 +54,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         spinKitView = findViewById(R.id.spin_kit);
         this.ssid = ConnectionSSID.getConnectedSSID(this);
         this.actualSSID = new ConnectionSSID(this);
-        StorageSingleton.getInstance().setSsid(ConnectionSSID.getConnectedSSID(this));
+        StorageSingleton.getInstance().setSsid(this.ssid);
         this.validateServices();
     }
 
@@ -120,8 +120,8 @@ public class SSIDConnectionActivity extends AppCompatActivity {
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
                 SSIDConnectionActivity.this.textLoading.setText("Conectandose a la red WIFI");
-                SSIDConnectionActivity.this.connectToSSID(data.getSsid2_empresa(), data.getPassword());
             }, 1000);
+            SSIDConnectionActivity.this.connectToSSID(data.getSsid2_empresa(), data.getPassword());
 
             //Arrays.asList(data).indexOf( )
         });
@@ -163,6 +163,13 @@ public class SSIDConnectionActivity extends AppCompatActivity {
     }
 
 
+    private void startActivityAd()
+    {
+        final Handler handler = new Handler();
+        handler.postDelayed(() -> {
+            this.startActivity(new Intent(this,CustomerRecord.class));
+        }, 3000);
+    }
 
     private void connectToSSID(String ssid, String password)
     {
@@ -176,7 +183,8 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         {
             StorageSingleton.getInstance().setNetId(connection.getNetWorkID());
             Toast.makeText(this,"Conectado a "+ ssid, Toast.LENGTH_LONG).show();
-            this.startActivity(new Intent(this,CustomerRecord.class));
+            this.startActivityAd();
+//            this.startActivity(new Intent(this,CustomerRecord.class));
             this.connectionList.add(connection);
             this.connectionList.add(connection);
         }
@@ -189,7 +197,9 @@ public class SSIDConnectionActivity extends AppCompatActivity {
                 Toast.makeText(this,"Conectado a "+ ssid, Toast.LENGTH_LONG).show();
                 this.connectionList.add(connection);
                 StorageSingleton.getInstance().setNetId(connection.getNetWorkID());
-                this.startActivityForResult(new Intent(this,CustomerRecord.class), 0);
+//                this.startActivityForResult(new Intent(this,CustomerRecord.class), 0);
+                this.startActivityAd();
+
             }
             else
             {

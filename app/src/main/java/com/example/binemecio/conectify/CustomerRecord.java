@@ -131,7 +131,9 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         if (isValidName && isValidLastName && isValidPhone && isValidEmail)
         {
 
-            this.minimize();
+            this.minimize();this.connection.sendRecordDataToServer(record, (result, message) -> {
+
+            });
             this.startActivityForResult(new Intent(this,DashBoardActivity.class),0);
         }
         else
@@ -185,12 +187,12 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
             if (view == this.editTextName)
             {
                 this.record.setNombres_cliente(this.editTextName.getText().toString());
-                isValidName = this.helper.isValidName(helper.getString( this.record.getNombres_cliente()) );
+                isValidName = !this.helper.isNullOrWhiteSpace(helper.getString( this.record.getNombres_cliente()) );
             }
             else if (view == this.editTextLastName)
             {
                 this.record.setApellidos_cliente(helper.getString(this.editTextLastName.getText().toString()));
-                isValidLastName = this.helper.isValidName(this.record.getApellidos_cliente());
+                isValidLastName = !this.helper.isNullOrWhiteSpace(this.record.getApellidos_cliente());
             }
             else if (view == this.editTextPhone)
             {
