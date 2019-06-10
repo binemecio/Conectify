@@ -16,7 +16,7 @@ import java.util.List;
 public class EnterPrise {
 
     private String id_configuracion_empresa, ssid1_empresa, ssid2_empresa, password, direccion_url, id_ciclo_display_anuncios  = "";
-    private Long anuncio_lapso, tiempo_ciclo = Long.valueOf(0);
+    private Long anuncio_lapso, tiempo_ciclo_lanzamiento, tiempo_ciclo_display_anuncio = Long.valueOf(0);
     private List<Ad> adList = new ArrayList<>();
 
 
@@ -33,9 +33,10 @@ public class EnterPrise {
             this.ssid2_empresa = json.getString("ssid2_empresa") + "";
             this.password = json.getString("password") + "";
             this.direccion_url = json.getString("direccion_url");
-            this.anuncio_lapso = this.convertToTime(json.getString("anuncio_lapsos"));
-            this.tiempo_ciclo = this.convertToTime( json.getString("tiempo_ciclo"));
+            this.tiempo_ciclo_lanzamiento = this.convertToTime(json.getString("tiempo_ciclo_lanzamiento"));
+            this.tiempo_ciclo_display_anuncio = this.convertToTime( json.getString("tiempo_ciclo_display_anuncio"));
             this.id_ciclo_display_anuncios = json.getString("id_ciclo_display_anuncios");
+            this.anuncio_lapso = this.convertToTime(json.getString("anuncio_lapsos"));
 
             //this.tiempo_ciclo = json.getString("tiempo_ciclo") + "";
         }
@@ -46,11 +47,11 @@ public class EnterPrise {
 
 
     private Long convertToTime(String value){
-        DateFormat formatter = new SimpleDateFormat("hh:mm:ss");
+        DateFormat formatter = new SimpleDateFormat("HH:mm:ss");
         try {
             java.sql.Time time = new java.sql.Time(formatter.parse(value).getTime());
 //            long valueTime =  time.getTime();
-            long valueMiliseconds = time.getSeconds() * 1000;
+            long valueMiliseconds = (time.getSeconds() * 1000) + (time.getMinutes() * 1000 * 60);
             return valueMiliseconds;
         } catch (ParseException e) {
             e.printStackTrace();
@@ -154,11 +155,19 @@ public class EnterPrise {
         this.anuncio_lapso = anuncio_lapso;
     }
 
-    public Long getTiempo_ciclo() {
-        return tiempo_ciclo;
+    public Long getTiempo_ciclo_lanzamiento() {
+        return tiempo_ciclo_lanzamiento;
     }
 
-    public void setTiempo_ciclo(Long tiempo_ciclo) {
-        this.tiempo_ciclo = tiempo_ciclo;
+    public void setTiempo_ciclo_lanzamiento(Long tiempo_ciclo_lanzamiento) {
+        this.tiempo_ciclo_lanzamiento = tiempo_ciclo_lanzamiento;
+    }
+
+    public Long getTiempo_ciclo_display_anuncio() {
+        return tiempo_ciclo_display_anuncio;
+    }
+
+    public void setTiempo_ciclo_display_anuncio(Long tiempo_ciclo_display_anuncio) {
+        this.tiempo_ciclo_display_anuncio = tiempo_ciclo_display_anuncio;
     }
 }

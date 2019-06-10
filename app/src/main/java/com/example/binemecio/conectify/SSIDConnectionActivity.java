@@ -98,7 +98,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
     private void startConnectionServer()
     {
         textLoading.setText("Recupenrando Información");
-
+//        this.ssid = "KODEIN_WIFI";
         connectionServer.getEnterpriseDataFromServer(this.ssid.replace("\"","") ,data -> {
             if (data == null){
                 Toast.makeText(this,"Failed retrieve data from server", Toast.LENGTH_LONG).show();
@@ -117,6 +117,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
 //            }
             StorageSingleton.getInstance().setEnterPrise(data);
             StorageSingleton.getInstance().setSsid2(data.getSsid2_empresa());
+            StorageSingleton.getInstance().setLoopTime(data.getTiempo_ciclo_lanzamiento());
             final Handler handler = new Handler();
             handler.postDelayed(() -> {
                 SSIDConnectionActivity.this.textLoading.setText("Conectandose a la red WIFI");

@@ -39,7 +39,7 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
         setContentView(R.layout.activity_customer_record);
         this.setTitle("Registro");
         this.initialize();
-        this.getLoopTime();
+        //this.getLoopTime();
         this.assigneEventClick();
         this.loadData();
     }
@@ -206,8 +206,6 @@ public class CustomerRecord extends AppCompatActivity implements View.OnClickLis
             }
         }
     }
-
-
     HelperAd helperAd;
 
     @Override

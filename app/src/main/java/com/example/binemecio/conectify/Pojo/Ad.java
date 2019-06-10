@@ -13,8 +13,8 @@ public class Ad {
 
     public Ad(EnterPrise obj)
     {
-        this.anuncio_lapso = obj.getAnuncio_lapso();
-        this.tiempo_ciclo = obj.getTiempo_ciclo();
+        this.anuncio_lapso = obj.getTiempo_ciclo_lanzamiento();
+        this.tiempo_ciclo = obj.getTiempo_ciclo_display_anuncio();
         this.direccion_url = obj.getDireccion_url();
         this.id_ciclo_display_anuncios = obj.getId_ciclo_display_anuncios();
     }

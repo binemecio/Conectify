@@ -1,12 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#03A9F4</color>
-    <color name="colorPrimaryDark">#0288D1</color>
-    <color name="colorAccent">#3277F1</color>
+
+    <!--Propuesta #1-->
+    <!--<color name="colorPrimary">#FFFFFF</color>-->
+    <!--<color name="colorPrimaryDark">#AFAFAF</color>-->
+    <!--<color name="colorAccent">#372549</color>-->
+    <!--<color name="secundaryTex">#777777</color>-->
+    <!--<color name="separator">#777777</color>-->
+    <!--<color name="primaryText">#353535</color>-->
+    <!--<color name="white">#FFFFFF</color>-->
+    <!--<color name="actionBarTextColor">#372549</color>-->
+
+
+    <!--Propuesta #2-->
+    <color name="colorPrimary">#160F29</color>
+    <color name="colorPrimaryDark">#1A1423</color>
+    <color name="colorAccent">#372549</color>
     <color name="secundaryTex">#777777</color>
     <color name="separator">#777777</color>
     <color name="primaryText">#353535</color>
     <color name="white">#FFFFFF</color>
+    <color name="actionBarTextColor">#FFFFFF</color>
+
+    <!--Propuesta #2-->
+    <!--<color name="colorPrimary">#160F29</color>-->
+    <!--<color name="colorPrimaryDark">#1A1423</color>-->
+    <!--<color name="colorAccent">#372549</color>-->
+    <!--<color name="secundaryTex">#777777</color>-->
+    <!--<color name="separator">#777777</color>-->
+    <!--<color name="primaryText">#353535</color>-->
+    <!--<color name="white">#FFFFFF</color>-->
 
 
 
