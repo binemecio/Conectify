@@ -101,25 +101,6 @@ public class AdActivity extends AppCompatActivity  implements View.OnClickListen
 
     }
 
-
-//    @Override
-//    public void onReceive(Context context, Intent intent) {
-//
-//        int status = NetworkUtil.getConnectivityStatusString(context);
-//        if ("android.net.conn.CONNECTIVITY_CHANGE".equals(intent.getAction())) {
-//            if (status == NetworkUtil.NETWORK_STATUS_NOT_CONNECTED) {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                    this.finishAndRemoveTask();
-//                }
-//                else
-//                {
-//                    this.finishAffinity();
-//                }
-//            }
-//        }
-//    }
-
-
     private void initialize()
     {
         this.webView = findViewById(R.id.webview);
@@ -189,58 +170,6 @@ public class AdActivity extends AppCompatActivity  implements View.OnClickListen
     }
 
 
-//
-//    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        boolean isFinishActivity = StorageSingleton.getInstance().isFinish();
-//
-//        if (isFinishing()) {
-//            StorageSingleton.getInstance().setFinish(true);
-//            String ssid = StorageSingleton.getInstance().getSsid();
-//            ConnectionSSID connectionSSID = new ConnectionSSID(this);
-//            connectionSSID.setNetworkSSID(ssid);
-//            connectionSSID.disconnectCurrentNetwork();
-//            connectionSSID.tryReconnect();
-//        }
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        if (isFinishing()) {
-//            StorageSingleton.getInstance().setFinish(true);
-//            String ssid = StorageSingleton.getInstance().getSsid();
-//            ConnectionSSID connectionSSID = new ConnectionSSID(this);
-//            connectionSSID.setNetworkSSID(ssid);
-//            connectionSSID.disconnectCurrentNetwork();
-//            connectionSSID.tryReconnect();
-//        }
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        if (isFinishing()) {
-//            StorageSingleton.getInstance().setFinish(true);
-//            String ssid = StorageSingleton.getInstance().getSsid();
-//            ConnectionSSID connectionSSID = new ConnectionSSID(this);
-//            connectionSSID.setNetworkSSID(ssid);
-//            connectionSSID.disconnectCurrentNetwork();
-//            connectionSSID.tryReconnect();
-//        }
-//    }
-//
-//    @Override
-//    public void finish() {
-//        super.finish();
-//        String ssid = StorageSingleton.getInstance().getSsid();
-//        ConnectionSSID connectionSSID = new ConnectionSSID(this);
-//        connectionSSID.setNetworkSSID(ssid);
-//        connectionSSID.disconnectCurrentNetwork();
-//        connectionSSID.tryReconnect();
-//    }
-
     private void closeActivity()
     {
         if (!hasClosed)
@@ -250,8 +179,6 @@ public class AdActivity extends AppCompatActivity  implements View.OnClickListen
             helperAd.startEngine();
         }
         this.minimize();
-//        AdActivity.this.setResult(0);
-//        AdActivity.this.finish();
     }
 
 

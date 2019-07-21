@@ -21,9 +21,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         handler.postDelayed(() -> {
             SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, SSIDConnectionActivity.class));
         }, 3000);
-//        handler.postDelayed(() -> {
-//            SplashScreenActivity.this.startActivity(new Intent(SplashScreenActivity.this, TestActivity.class));
-//        }, 3000);
     }
 
     @Override

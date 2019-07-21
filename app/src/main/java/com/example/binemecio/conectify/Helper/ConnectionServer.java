@@ -86,7 +86,7 @@ public class ConnectionServer {
                 callback.setDataEnterprise(null);
             }
         }, error -> {
-            System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage());
+            System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage() + " URL : [ "+ GlobalVar.ssidUrl +" ]");
             callback.setDataEnterprise(null);
         }
         ){
@@ -127,7 +127,8 @@ public class ConnectionServer {
             result.setData(true, response);
 
         }, error -> {
-            //System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage());
+            System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage() + " URL : [ "+ GlobalVar.recordUrl +" ]");
+
             result.setData(false, error.getMessage());
         }
         ){
@@ -194,7 +195,8 @@ public class ConnectionServer {
 
 
         }, error -> {
-            //System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage());
+            System.out.println("Error >>>>>>>>>>>>>>>>>>>>> : " + error.getMessage() + " URL : [ "+ GlobalVar.adLoopUrl +" ]");
+
             result.setData(false, Long.valueOf(0));
         }
         ){

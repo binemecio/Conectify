@@ -41,11 +41,9 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         this.connectionServer = new ConnectionServer(this);
         this.initialice();
 
-
         if (getIntent().getBooleanExtra("EXIT", false)) {
             finish();
         }
-       // this.registerTheCurrentNetwork();
     }
 
     private void initialice()
@@ -87,12 +85,7 @@ public class SSIDConnectionActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-
         super.onResume();
-//        if (!this.isConnected) {
-//            this.validateServices();
-//        }
-
     }
 
     private void startConnectionServer()
@@ -110,11 +103,6 @@ public class SSIDConnectionActivity extends AppCompatActivity {
                 return;
             }
 
-//            for (EnterPrise item : data)
-//            {
-//                System.out.println("SSID 2: "+ item.getSsid2_empresa());
-//                System.out.println("Password: "+ item.getPassword());
-//            }
             StorageSingleton.getInstance().setEnterPrise(data);
             StorageSingleton.getInstance().setSsid2(data.getSsid2_empresa());
             StorageSingleton.getInstance().setLoopTime(data.getTiempo_ciclo_lanzamiento());
@@ -124,7 +112,6 @@ public class SSIDConnectionActivity extends AppCompatActivity {
             }, 1000);
             SSIDConnectionActivity.this.connectToSSID(data.getSsid2_empresa(), data.getPassword());
 
-            //Arrays.asList(data).indexOf( )
         });
     }
 
@@ -149,20 +136,19 @@ public class SSIDConnectionActivity extends AppCompatActivity {
             // print current network
             this.connectionList.add(connection);
         }
-        else
-        {
-            if(!ConnectionSSID.isWifiOpen(this))
-            {
-
-            }
-            else if(ConnectionSSID.getConnectedSSID(this).isEmpty())
-            {
-
-            }
-
-        }
+//        else
+//        {
+//            if(!ConnectionSSID.isWifiOpen(this))
+//            {
+//
+//            }
+//            else if(ConnectionSSID.getConnectedSSID(this).isEmpty())
+//            {
+//
+//            }
+//
+//        }
     }
-
 
     private void startActivityAd()
     {
@@ -178,7 +164,6 @@ public class SSIDConnectionActivity extends AppCompatActivity {
         ConnectionSSID connection = new ConnectionSSID(this, ssid, password);
 
         boolean isConnected = connection.tryHiddenConnection();
-
 
         if(isConnected)
         {
@@ -200,7 +185,6 @@ public class SSIDConnectionActivity extends AppCompatActivity {
                 StorageSingleton.getInstance().setNetId(connection.getNetWorkID());
 //                this.startActivityForResult(new Intent(this,CustomerRecord.class), 0);
                 this.startActivityAd();
-
             }
             else
             {
@@ -210,9 +194,6 @@ public class SSIDConnectionActivity extends AppCompatActivity {
                 } );
             }
         }
-
-
-
     }
 
     @Override

@@ -42,52 +42,6 @@ public class DashBoardActivity extends AppCompatActivity {
         setResult(1);
     }
 
-    //    @Override
-//    protected void onPause() {
-//        super.onPause();
-//        boolean isFinishActivity = StorageSingleton.getInstance().isFinish();
-//
-//        if (isFinishing() ) {
-//            String ssid = StorageSingleton.getInstance().getSsid();
-//            ConnectionSSID connectionSSID = new ConnectionSSID(this);
-//            connectionSSID.setNetworkSSID(ssid);
-//            connectionSSID.disconnectCurrentNetwork();
-//            connectionSSID.tryReconnect();
-//        }
-//    }
-//
-//    @Override
-//    protected void onStop() {
-//        super.onStop();
-//        if (isFinishing()) {
-//            StorageSingleton.getInstance().setFinish(true);
-//            String ssid = StorageSingleton.getInstance().getSsid();
-//            ConnectionSSID connectionSSID = new ConnectionSSID(this);
-//            connectionSSID.setNetworkSSID(ssid);
-//            connectionSSID.disconnectCurrentNetwork();
-//            connectionSSID.tryReconnect();
-//        }
-//    }
-//
-//    @Override
-//    protected void onDestroy() {
-//        super.onDestroy();
-//        String ssid = StorageSingleton.getInstance().getSsid();
-//        ConnectionSSID connectionSSID = new ConnectionSSID(this);
-//        connectionSSID.setNetworkSSID(ssid);
-//        connectionSSID.disconnectCurrentNetwork();
-//        connectionSSID.tryReconnect();
-//    }
-//
-//    @Override
-//    public void finish() {
-//        super.finish();
-//        String ssid = StorageSingleton.getInstance().getSsid();
-//        ConnectionSSID connectionSSID = new ConnectionSSID(this);
-//        connectionSSID.setNetworkSSID(ssid);
-//        connectionSSID.disconnectCurrentNetwork();
-//        connectionSSID.tryReconnect();
-//    }
 
     public void minimize() {
         this.moveTaskToBack(true);
