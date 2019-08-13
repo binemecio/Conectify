@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.binemecio.conectify">
+    android:versionName="1.2"
+    android:versionCode="3"
+    package="app.cloudnicaragua.bluewifi.nicaragua">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -17,17 +19,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".SSIDConnectionActivity"
+            android:name="app.cloudnicaragua.bluewifi.nicaragua.SSIDConnectionActivity"
             android:noHistory="true" />
         <activity
-            android:name=".CustomerRecord"
+            android:name="app.cloudnicaragua.bluewifi.nicaragua.CustomerRecord"
             android:noHistory="false" />
         <activity
-            android:name=".AdActivity"
+            android:name="app.cloudnicaragua.bluewifi.nicaragua.AdActivity"
             android:noHistory="false"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
         <activity
-            android:name=".SplashScreenActivity"
+            android:name="app.cloudnicaragua.bluewifi.nicaragua.SplashScreenActivity"
             android:noHistory="true"
             android:theme="@style/SplashTheme">
             <intent-filter>
@@ -38,13 +40,13 @@
         </activity>
 
         <service
-            android:name=".Service.MyService"
+            android:name="app.cloudnicaragua.bluewifi.nicaragua.Service.MyService"
             android:enabled="true"
             android:stopWithTask="false"
             android:exported="false" />
 
-        <activity android:name=".Test.TestActivity" />
-        <activity android:name=".DashBoardActivity"
+        <activity android:name="app.cloudnicaragua.bluewifi.nicaragua.Test.TestActivity" />
+        <activity android:name="app.cloudnicaragua.bluewifi.nicaragua.DashBoardActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
             android:noHistory="false"
             ></activity>

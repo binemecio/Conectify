@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="0dp"
     android:layout_margin="0dp"
-    tools:context="com.example.binemecio.conectify.AdActivity">
+    tools:context="com.cloudnicaragua.bluewifi.nicaragua.app.cloudnicaragua.bluewifi.nicaragua.AdActivity">
 
 
     <WebView
